@@ -1,0 +1,39 @@
+.counter {
+  display: grid;
+  height: 600px;
+  grid-template:
+    "number number number" 3fr
+    "minus random plus" 1fr;
+
+  &__value {
+    font-size: 200px;
+    grid-area: number;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border: 1px solid #fff1;
+  }
+
+  &__button {
+    border: 1px solid #fff1;
+    background: none;
+    outline: none;
+    color: #fff;
+    cursor: pointer;
+    font-size: 100px;
+
+    &.minus {
+      grid-area: minus;
+    }
+
+    &.random {
+      grid-area: random;
+    }
+
+    &.plus {
+      grid-area: plus;
+    }
+  }
+}

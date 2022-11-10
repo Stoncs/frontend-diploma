@@ -1,0 +1,34 @@
+@import '~/styles/colors';
+
+.navbar {
+  display: flex;
+  justify-content: center;
+  margin: 1.5em 0.5em;
+  font-size: 18px;
+
+  &__item {
+    color: $clr_text_light;
+    margin: 0 1.5em;
+    padding: 0.5em;
+    text-decoration: none;
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      display: block;
+      transition: .1s all;
+      height: 3px;
+      background-color: $clr_text_light;
+      left: 50%;
+      width: 0%;
+      bottom: 0;
+    }
+
+    &:hover::after,
+    &.active::after {
+      left: 0%;
+      width: 100%;
+    }
+  }
+}

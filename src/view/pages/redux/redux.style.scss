@@ -1,0 +1,13 @@
+@import '~/styles/colors';
+
+.redux {
+  width: 800px;
+  margin: 0 auto;
+  color: $clr_text_light;
+
+  &__disclaimer {
+    background-color: #fff1;
+    padding: 1em;
+    white-space: pre-line;
+  }
+}

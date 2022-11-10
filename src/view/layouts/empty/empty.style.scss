@@ -1,0 +1,16 @@
+@import '../../../styles/colors';
+
+.layout {
+  align-items: center;
+  background-color: $clr_background_light;
+  color: $clr_text_dark;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100vh;
+
+  a {
+    margin: 1em;
+    color: $clr_text_dark;
+  }
+}
