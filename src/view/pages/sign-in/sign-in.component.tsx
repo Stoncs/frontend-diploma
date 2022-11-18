@@ -56,6 +56,7 @@ export default function SignIn() {
         <button className="btn" onClick={onSubmit}>
           Войти
         </button>
+        <Link to={"/password-recovery"}>Восстановить пароль</Link>
         <Link to={"/sign-up"}>Создать новый аккаунт</Link>
       </div>
     </form>
