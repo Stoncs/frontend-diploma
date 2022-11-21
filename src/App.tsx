@@ -1,18 +1,41 @@
+import React from "react";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
+import { IntlProvider } from "react-intl";
 
-import { createApplicationStore } from "./app/application.store";
+import { LOCALES } from "./i18n/locales";
+import { messages } from "./i18n/messages";
+import { store } from "./app/application.store";
 import { Router } from "./router";
 
 import "./styles/global.scss";
 
 export const App = () => {
-  const store = createApplicationStore();
+  function getInitialLocale() {
+    // получаем сохраненные данные
+    const savedLocale = localStorage.getItem("locale");
+    return savedLocale || LOCALES.RUSSIAN;
+  }
+
+  const [currentLocale, setCurrentLocale] = React.useState(getInitialLocale());
+
   return (
     <Provider store={store}>
-      <BrowserRouter>
-        <Router />
-      </BrowserRouter>
+      <IntlProvider
+        messages={messages[currentLocale]}
+        locale={currentLocale}
+        defaultLocale={LOCALES.RUSSIAN}
+      >
+        <button onClick={() => setCurrentLocale(LOCALES.RUSSIAN)}>
+          Русский
+        </button>
+        <button onClick={() => setCurrentLocale(LOCALES.ENGLISH)}>
+          English
+        </button>
+        <BrowserRouter>
+          <Router />
+        </BrowserRouter>
+      </IntlProvider>
     </Provider>
   );
 };

@@ -1,36 +1,35 @@
-import { useDispatch, useSelector } from 'react-redux';
+import styles from "./counter.style.scss";
 
-import { ApplicationStore } from '../../../app/application.store';
 import {
-  decrementAction,
-  incrementAction,
-  requestSetValueAction,
-} from '../../../app/counter/counter.action';
-
-import styles from './counter.style.scss';
+  asyncRandom,
+  decrement,
+  increment,
+  selectCount,
+} from "~/app/counter/counter.store";
+import { useAppDispatch, useAppSelector } from "~/app/store.hooks";
 
 export const Counter = () => {
-  const number = useSelector<ApplicationStore, number>(state => state.counter.counter);
-  const dispatch = useDispatch();
+  const number = useAppSelector(selectCount);
+  const dispatch = useAppDispatch();
 
   return (
     <div className={styles.counter}>
       <div className={styles.counter__value}>{number}</div>
       <button
         className={`${styles.counter__button} ${styles.minus}`}
-        onClick={() => dispatch(decrementAction())}
+        onClick={() => dispatch(decrement())}
       >
         -
       </button>
       <button
         className={`${styles.counter__button} ${styles.random}`}
-        onClick={() => dispatch(requestSetValueAction())}
+        onClick={() => dispatch(asyncRandom())}
       >
         ?
       </button>
       <button
         className={`${styles.counter__button} ${styles.plus}`}
-        onClick={() => dispatch(incrementAction(2))}
+        onClick={() => dispatch(increment(2))}
       >
         +2
       </button>

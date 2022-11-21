@@ -1,25 +1,12 @@
-import { applyMiddleware, combineReducers, createStore, Store } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
-import createSagaMiddleware from 'redux-saga';
+import { configureStore } from '@reduxjs/toolkit';
 
-import { counterReducer, CounterStore } from './counter/counter.store';
-import { rootSaga } from './root.saga';
+import { counterReducer } from '~/app/counter/counter.store';
 
-export interface ApplicationStore {
-  counter: CounterStore;
-}
+export const store = configureStore({
+  reducer: {
+    counter: counterReducer,
+  },
+});
 
-export function createApplicationStore(): Store<ApplicationStore> {
-  const sagaMiddleware = createSagaMiddleware();
-
-  const store = createStore(
-    combineReducers({
-      counter: counterReducer,
-    }),
-    composeWithDevTools(applyMiddleware(sagaMiddleware)),
-  );
-
-  sagaMiddleware.run(rootSaga);
-
-  return store;
-}
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;

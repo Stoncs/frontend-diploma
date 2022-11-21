@@ -1,23 +1,43 @@
-import { combineReducers, Action } from 'redux';
-import { createReducer, PayloadAction, Reducer } from 'typesafe-actions';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { decrementAction, incrementAction, setValueAction } from './counter.action';
+import { RootState } from '~/app/application.store';
 
-export interface CounterStore {
-  counter: number;
+export interface CounterState {
+  value: number;
 }
 
-export const counterReducer: Reducer<CounterStore, Action> = combineReducers({
-  counter: createReducer<number, Action>(0)
-    .handleAction(decrementAction, state => state - 1)
-    .handleAction(
-      // TODO: wtf it resolves as never, mb use different lib
-      incrementAction as (...args: any[]) => never,
-      (state, { payload }: PayloadAction<string, number>) => state + payload,
-    )
-    .handleAction(
-      // TODO: wtf it resolves as never, mb use different lib
-      setValueAction as (...args: any[]) => never,
-      (_, { payload }: PayloadAction<string, number>) => payload,
-    ),
+const initialState = {
+  value: 0,
+};
+
+export const counterSlice = createSlice({
+  name: 'counter',
+  initialState,
+  reducers: {
+    increment: (state, action: PayloadAction<number>) => {
+      state.value += action.payload;
+    },
+    decrement: state => {
+      state.value -= 1;
+    },
+  },
+  extraReducers: builder => {
+    builder.addCase(asyncRandom.fulfilled, (state, action) => {
+      state.value = action.payload;
+    });
+  },
 });
+
+export const asyncRandom = createAsyncThunk('counter/asyncRandom', async () => {
+  return new Promise<number>(resolve => {
+    setTimeout(() => {
+      resolve(Math.round(Math.random() * 100 - 50));
+    }, 1000);
+  });
+});
+
+export const { increment, decrement } = counterSlice.actions;
+
+export const selectCount = (state: RootState) => state.counter.value;
+
+export const counterReducer = counterSlice.reducer;

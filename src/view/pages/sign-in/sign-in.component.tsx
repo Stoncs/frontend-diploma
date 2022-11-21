@@ -1,5 +1,6 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { REGISTRATION_ROUTE } from "~/utils/consts";
 
 import styles from "./sign-in.style.scss";
 
@@ -34,7 +35,7 @@ export default function SignIn() {
       <div className={styles.sign_form__header}>
         <h1>Войти</h1>
         <div className={styles.sign_form__input}>
-          <label htmlFor="nickname">Никнейм</label>
+          <label htmlFor="nickname">Телефон</label>
           <input
             type="text"
             name="nickname"
@@ -57,7 +58,7 @@ export default function SignIn() {
           Войти
         </button>
         <Link to={"/password-recovery"}>Восстановить пароль</Link>
-        <Link to={"/sign-up"}>Создать новый аккаунт</Link>
+        <Link to={REGISTRATION_ROUTE}>Создать новый аккаунт</Link>
       </div>
     </form>
   );
