@@ -2,21 +2,8 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FormattedMessage } from "react-intl";
 import { REGISTRATION_ROUTE } from "~/utils/consts";
-
-import jwt_decode from "jwt-decode";
-
+import { logIn } from "~/http/api";
 import styles from "./sign-in.style.scss";
-import axios from "axios";
-
-const $host = axios.create({
-  baseURL: "http://localhost:8080/",
-});
-
-const logIn = async (username: String, password: String) => {
-  const { data } = await $host.post("/api/auth/signin", { username, password });
-  localStorage.setItem("token", data.token);
-  return jwt_decode(data.token);
-};
 
 export default function SignIn() {
   const [email, setEmail] = React.useState("");
