@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { FormattedMessage } from "react-intl";
 import axios, { AxiosError } from "axios";
-
+// ДОПИСАТЬ ВАЛИДАЦИЮ НОРМАЛЬНО
 import styles from "./sign-up.style.scss";
 
 import { LOGIN_ROUTE } from "~/utils/consts";
@@ -39,6 +39,7 @@ export default function SingUp() {
       if (error instanceof AxiosError) {
         // eslint-disable-next-line no-console
         console.log(error.response?.data.message);
+        // ... дописать, что проверку не прошло
       } else {
         console.log("Unexpected error", error);
       }

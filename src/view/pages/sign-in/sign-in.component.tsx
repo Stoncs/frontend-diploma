@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FormattedMessage } from "react-intl";
-import { REGISTRATION_ROUTE } from "~/utils/consts";
+import { DEVICES_ROUTE, REGISTRATION_ROUTE } from "~/utils/consts";
 import { logIn } from "~/http/api";
 import styles from "./sign-in.style.scss";
 
@@ -15,7 +15,7 @@ export default function SignIn() {
     try {
       const data = await logIn(email, password);
       // const user = await getUserById(data.id);
-      navigate("/");
+      navigate(DEVICES_ROUTE);
       console.log(data);
     } catch (error) {
       alert(error);
