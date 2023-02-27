@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import React from "react";
 import { Link, useParams } from "react-router-dom";
 import { getDeviceParameters, changeDeviceParameters } from "~/http/api";
@@ -66,20 +67,25 @@ const DeviceField = ({ type, title, initialValue, id }: ProfileFieldProps) => {
 export const DeviceSettings = () => {
   const { id: deviceId } = useParams();
   const [deviceParameters, setDeviceParameters] = React.useState<IDevice>();
+  const username = localStorage.getItem("username");
 
+  // Метод для получения параметров камеры
   const fetchDeviceParameters = async () => {
-    const data = await getDeviceParameters(deviceId!);
-    return data;
-  };
-  React.useEffect(() => {
     try {
-      fetchDeviceParameters().then((data) => {
-        console.log(data);
-        setDeviceParameters(data);
-      });
+      const data = await getDeviceParameters(deviceId!, username!);
+      return data;
     } catch (e) {
+      // сообщение
       alert(e);
+      // перенаправить
     }
+  };
+
+  // Получение информации о камере
+  React.useEffect(() => {
+    fetchDeviceParameters().then((data) => {
+      setDeviceParameters(data);
+    });
   }, []);
   return (
     <div>

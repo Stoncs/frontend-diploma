@@ -1,5 +1,4 @@
 type UserDetails = {
-  token: String;
   id: Number;
   username: String;
   fullname: String;

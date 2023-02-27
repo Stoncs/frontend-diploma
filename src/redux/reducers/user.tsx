@@ -1,5 +1,4 @@
 interface UserState {
-  token: String;
   id: Number;
   username: String;
   fullname: String;
@@ -9,7 +8,6 @@ interface UserState {
 }
 
 const initialState: UserState = {
-  token: "",
   id: -1,
   username: "",
   fullname: "",

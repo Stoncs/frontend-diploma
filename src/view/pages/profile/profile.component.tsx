@@ -1,5 +1,7 @@
 import React from "react";
-import { changeProfile, sendEmail } from "~/http/api";
+import { changeProfile, getUserProfile, sendEmail } from "~/http/api";
+import { setUser } from "~/redux/actions/user";
+import { useAppDispatch } from "~/redux/hooks";
 
 type ProfileFieldProps = {
   name: string;
@@ -17,6 +19,31 @@ const ProfileField = ({
 }: ProfileFieldProps) => {
   const [available, setAvailable] = React.useState(false);
   const [value, setValue] = React.useState(initialValue);
+
+  const fetchUserProfileInfo = async () => {
+    const data = getUserProfile(username);
+    return data;
+  };
+  React.useEffect(() => {
+    try {
+      fetchUserProfileInfo().then((data) => {
+        console.log(data);
+        const dispatch = useAppDispatch();
+        dispatch(
+          setUser({
+            id: data.id,
+            username: data.username,
+            fullname: data.fullname,
+            organisation: data.organisation,
+            phoneNumber: data.phoneNumber,
+          })
+        );
+      });
+    } catch (e) {
+      alert(e);
+    }
+  }, []);
+
   return (
     <div>
       <p>{title}</p>
