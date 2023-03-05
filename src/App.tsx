@@ -8,7 +8,7 @@ import { messages } from "./i18n/messages";
 import { store } from "./app/application.store";
 import { Router } from "./router";
 
-import "./styles/global.scss";
+import "./scss/normalise.scss";
 
 export const App = () => {
   function getInitialLocale() {
