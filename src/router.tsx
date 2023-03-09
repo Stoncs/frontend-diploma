@@ -15,8 +15,6 @@ import { NotFoundPage } from "./view/pages/not-found/not-found.component";
 import { PasswordChange } from "./view/pages/password-change/password-change.component";
 import { PasswordRecovery } from "./view/pages/password-recovery/password-recovery";
 import { Profile } from "./view/pages/profile/profile.component";
-import { Redux } from "./view/pages/redux/redux.component";
-import { Rules } from "./view/pages/rules/rules.component";
 import SignIn from "./view/pages/sign-in/sign-in.component";
 import SingUp from "./view/pages/sign-up/sign-up.component";
 

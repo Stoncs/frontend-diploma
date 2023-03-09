@@ -28,16 +28,17 @@ const ProfileField = ({
     try {
       fetchUserProfileInfo().then((data) => {
         console.log(data);
-        const dispatch = useAppDispatch();
-        dispatch(
-          setUser({
-            id: data.id,
-            username: data.username,
-            fullname: data.fullname,
-            organisation: data.organisation,
-            phoneNumber: data.phoneNumber,
-          })
-        );
+        // const dispatch = useAppDispatch();
+        // dispatch(
+        //   setUser({
+        //     id: data.id,
+        //     username: data.username,
+        //     fullname: data.fullname,
+        //     organisation: data.organisation,
+        //     roles: data.roles,
+        //     phoneNumber: data.phoneNumber,
+        //   })
+        // );
       });
     } catch (e) {
       alert(e);

@@ -5,6 +5,8 @@ import { useAppSelector } from "~/redux/hooks";
 import { UserDetails } from "~/redux/types";
 import { DEVICE_SETTINGS_ROUTE, LOGIN_ROUTE } from "~/utils/consts";
 
+import styles from "./devices.scss";
+
 interface IDevice {
   id: number;
   key: string;
@@ -54,7 +56,7 @@ export const Devices = () => {
   return (
     <div>
       {user.roles.includes("ROLE_ADMIN") ? (
-        <button>Добавить новое устройство</button>
+        <button className={styles.button}>Добавить новое устройство</button>
       ) : (
         <>
           <label>Ключ камеры:</label>

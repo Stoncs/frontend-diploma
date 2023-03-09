@@ -1,0 +1,7 @@
+@import "./../../../scss/fonts.scss";
+@import "./../../../scss/colors.scss";
+@import "./../../../scss/mixins.scss";
+
+.button {
+  @include blue-button;
+}

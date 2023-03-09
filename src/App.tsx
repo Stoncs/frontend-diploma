@@ -5,10 +5,12 @@ import { IntlProvider } from "react-intl";
 
 import { LOCALES } from "./i18n/locales";
 import { messages } from "./i18n/messages";
-import store from "./redux/store";
+import store, { Persistor } from "./redux/store";
+import { PersistGate } from "redux-persist/integration/react";
 import { Router } from "./router";
 
 import "./scss/normalise.scss";
+import Locales from "./components/locales.component";
 
 export const App = () => {
   function getInitialLocale() {
@@ -21,21 +23,19 @@ export const App = () => {
 
   return (
     <Provider store={store}>
-      <IntlProvider
-        messages={messages[currentLocale]}
-        locale={currentLocale}
-        defaultLocale={LOCALES.RUSSIAN}
-      >
-        <button onClick={() => setCurrentLocale(LOCALES.RUSSIAN)}>
-          Русский
-        </button>
-        <button onClick={() => setCurrentLocale(LOCALES.ENGLISH)}>
-          English
-        </button>
-        <BrowserRouter>
-          <Router />
-        </BrowserRouter>
-      </IntlProvider>
+      <PersistGate loading={null} persistor={Persistor}>
+        <IntlProvider
+          messages={messages[currentLocale]}
+          locale={currentLocale}
+          defaultLocale={LOCALES.RUSSIAN}
+        >
+          <Locales />
+
+          <BrowserRouter>
+            <Router />
+          </BrowserRouter>
+        </IntlProvider>
+      </PersistGate>
     </Provider>
   );
 };
