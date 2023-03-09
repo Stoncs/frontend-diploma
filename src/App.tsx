@@ -5,7 +5,7 @@ import { IntlProvider } from "react-intl";
 
 import { LOCALES } from "./i18n/locales";
 import { messages } from "./i18n/messages";
-import { store } from "./app/application.store";
+import store from "./redux/store";
 import { Router } from "./router";
 
 import "./scss/normalise.scss";

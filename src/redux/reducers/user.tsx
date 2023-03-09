@@ -1,18 +1,12 @@
-interface UserState {
-  id: Number;
-  username: String;
-  fullname: String;
-  organisation: String;
-  phoneNumber: String;
-  isAuth: Boolean;
-}
+import { UserDetails, UserAction } from "./../types";
 
-const initialState: UserState = {
+const initialState: UserDetails = {
   id: -1,
   username: "",
   fullname: "",
   organisation: "",
   phoneNumber: "",
+  roles: [],
   isAuth: false,
 };
 
@@ -21,7 +15,7 @@ const user = (state = initialState, action: UserAction) => {
     case "SET_USER":
       return {
         ...state,
-        info: { ...action.payload },
+        ...action.payload,
       };
     case "SET_IS_AUTH":
       return {

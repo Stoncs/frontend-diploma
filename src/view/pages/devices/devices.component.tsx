@@ -1,7 +1,9 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { getDevices, addNewDevice } from "~/http/api";
-import { DEVICE_SETTINGS_ROUTE } from "~/utils/consts";
+import { Link, useNavigate, useNavigation } from "react-router-dom";
+import { getDevicesForUser, addNewDevice, getDevicesAll } from "~/http/api";
+import { useAppSelector } from "~/redux/hooks";
+import { UserDetails } from "~/redux/types";
+import { DEVICE_SETTINGS_ROUTE, LOGIN_ROUTE } from "~/utils/consts";
 
 interface IDevice {
   id: number;
@@ -14,20 +16,30 @@ interface IDevice {
 
 export const Devices = () => {
   const [key, setKey] = React.useState("");
-
   const [devices, setDevices] = React.useState<IDevice[]>([]);
+  const navigate = useNavigate();
+
+  const user = useAppSelector<UserDetails>((state) => state.user);
 
   const fetchDevices = async () => {
-    const data = await getDevices(localStorage.getItem("id")!);
-    setDevices(data);
+    try {
+      if (user.roles.includes("ROLE_ADMIN")) {
+        // Админ имеет доступ ко всем камерам
+        const data = await getDevicesAll(user.username);
+        setDevices(data);
+      } else {
+        // Пользователь имеет доступ только к своим камерам
+        const data = await getDevicesForUser(user.id);
+        setDevices(data);
+      }
+    } catch (e) {
+      alert(e);
+      navigate(LOGIN_ROUTE);
+    }
   };
   // get devices
   React.useEffect(() => {
-    try {
-      fetchDevices();
-    } catch (e) {
-      alert(e);
-    }
+    fetchDevices();
   }, []);
 
   const onClickAddButton = async () => {
@@ -41,12 +53,22 @@ export const Devices = () => {
 
   return (
     <div>
-      <label>Ключ камеры:</label>
-      <input name="key" value={key} onChange={(e) => setKey(e.target.value)} />
-      <button onClick={() => onClickAddButton()}>
-        Добавить новое устройство
-      </button>
-      {devices.map((device, i) => (
+      {user.roles.includes("ROLE_ADMIN") ? (
+        <button>Добавить новое устройство</button>
+      ) : (
+        <>
+          <label>Ключ камеры:</label>
+          <input
+            name="key"
+            value={key}
+            onChange={(e) => setKey(e.target.value)}
+          />
+          <button onClick={() => onClickAddButton()}>
+            Добавить новое устройство
+          </button>
+        </>
+      )}
+      {devices.map((device) => (
         <div key={device.id}>
           Название:{" "}
           <Link to={DEVICE_SETTINGS_ROUTE.slice(0, -3) + device.id}>

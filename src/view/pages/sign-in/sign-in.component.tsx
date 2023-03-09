@@ -5,11 +5,14 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { DEVICES_ROUTE, REGISTRATION_ROUTE } from "~/utils/consts";
 import { logIn } from "~/http/api";
 import styles from "./sign-in.style.scss";
+import { useAppDispatch } from "~/redux/hooks";
+import { setUser } from "~/redux/actions/user";
 
 export default function SignIn() {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [error, setError] = React.useState(false);
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   // Локализация
@@ -21,8 +24,20 @@ export default function SignIn() {
     e.preventDefault();
     try {
       const data = await logIn(email, password);
+
+      dispatch(
+        setUser({
+          id: data.id,
+          username: data.username,
+          fullname: data.fullname,
+          organisation: data.organisation,
+          phoneNumber: data.phoneNumber,
+          roles: data.roles,
+          isAuth: true,
+        })
+      );
       setError(false);
-      // const user = await getUserById(data.id);
+
       navigate(DEVICES_ROUTE);
     } catch (error) {
       if (isAxiosError(error)) {

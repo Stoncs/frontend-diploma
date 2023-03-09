@@ -1,7 +1,10 @@
 import { AxiosError } from "axios";
 import React from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { getDeviceParameters, changeDeviceParameters } from "~/http/api";
+import { useAppSelector } from "~/redux/hooks";
+import { UserDetails } from "~/redux/types";
+import { DEVICES_ROUTE } from "~/utils/consts";
 
 interface IDevice {
   fov: string;
@@ -67,17 +70,18 @@ const DeviceField = ({ type, title, initialValue, id }: ProfileFieldProps) => {
 export const DeviceSettings = () => {
   const { id: deviceId } = useParams();
   const [deviceParameters, setDeviceParameters] = React.useState<IDevice>();
-  const username = localStorage.getItem("username");
-
+  const user = useAppSelector<UserDetails>((state) => state.user);
+  const navigate = useNavigate();
   // Метод для получения параметров камеры
   const fetchDeviceParameters = async () => {
     try {
-      const data = await getDeviceParameters(deviceId!, username!);
+      const data = await getDeviceParameters(deviceId!, user.username);
       return data;
     } catch (e) {
       // сообщение
       alert(e);
       // перенаправить
+      navigate(DEVICES_ROUTE);
     }
   };
 
