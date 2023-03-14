@@ -1,6 +1,6 @@
 export type UserDetails = {
   id: Number;
-  username: String;
+  email: String;
   fullname: String;
   organisation: String;
   phoneNumber: String;

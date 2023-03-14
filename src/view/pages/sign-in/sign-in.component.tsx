@@ -82,7 +82,13 @@ export default function SignIn() {
             </Link>
           </div>
         </div>
-        {error ? <div className={styles.error}>Ошибка</div> : ""}
+        {error ? (
+          <div className={styles.error}>
+            Неверный логин или пароль, попробуйте заново.
+          </div>
+        ) : (
+          ""
+        )}
         <div className={styles.sign_form__buttons}>
           <button className="btn" onClick={onSubmit}>
             <FormattedMessage id="signIn" />

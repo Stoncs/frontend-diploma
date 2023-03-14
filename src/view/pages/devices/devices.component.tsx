@@ -27,7 +27,7 @@ export const Devices = () => {
     try {
       if (user.roles.includes("ROLE_ADMIN")) {
         // Админ имеет доступ ко всем камерам
-        const data = await getDevicesAll(user.username);
+        const data = await getDevicesAll(user.email);
         setDevices(data);
       } else {
         // Пользователь имеет доступ только к своим камерам

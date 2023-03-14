@@ -7,7 +7,7 @@ type ProfileFieldProps = {
   name: string;
   title: string;
   initialValue: string;
-  username: string;
+  email: string;
 };
 
 // Компонент ProfileField
@@ -15,34 +15,23 @@ const ProfileField = ({
   name,
   title,
   initialValue,
-  username,
+  email,
 }: ProfileFieldProps) => {
   const [available, setAvailable] = React.useState(false);
   const [value, setValue] = React.useState(initialValue);
 
   const fetchUserProfileInfo = async () => {
-    const data = getUserProfile(username);
-    return data;
-  };
-  React.useEffect(() => {
     try {
-      fetchUserProfileInfo().then((data) => {
-        console.log(data);
-        // const dispatch = useAppDispatch();
-        // dispatch(
-        //   setUser({
-        //     id: data.id,
-        //     username: data.username,
-        //     fullname: data.fullname,
-        //     organisation: data.organisation,
-        //     roles: data.roles,
-        //     phoneNumber: data.phoneNumber,
-        //   })
-        // );
-      });
+      const data = getUserProfile(email);
+      return data;
     } catch (e) {
       alert(e);
     }
+  };
+  React.useEffect(() => {
+    fetchUserProfileInfo().then((data) => {
+      console.log(data);
+    });
   }, []);
 
   return (
@@ -62,7 +51,7 @@ const ProfileField = ({
         <button
           onClick={async () => {
             try {
-              const data = await changeProfile(name, value, username);
+              const data = await changeProfile(name, value, email);
               console.log(data);
             } catch (error) {
               alert(error);
@@ -81,37 +70,37 @@ const ProfileField = ({
 };
 
 export const Profile = () => {
-  const username = localStorage.getItem("username");
+  const email = localStorage.getItem("email");
   const fullname = localStorage.getItem("fullname");
   const organisation = localStorage.getItem("organisation");
   const phoneNumber = localStorage.getItem("phoneNumber");
 
   const onClickResetPassword = () => {
-    sendEmail(username!);
+    sendEmail(email!);
   };
 
   return (
     <div>
       <h1>Профиль</h1>
       <p>Почта</p>
-      <p>{username}</p>
+      <p>{email}</p>
       <ProfileField
         name="fullname"
         title="Полное имя"
         initialValue={fullname!}
-        username={username!}
+        email={email!}
       />
       <ProfileField
         name="organisation"
         title="Организация"
         initialValue={organisation!}
-        username={username!}
+        email={email!}
       />
       <ProfileField
         name="phoneNumber"
         title="Номер телефона"
         initialValue={phoneNumber!}
-        username={username!}
+        email={email!}
       />
       <p />
       <button onClick={onClickResetPassword}>Поменять пароль</button>

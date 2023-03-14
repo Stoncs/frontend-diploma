@@ -75,7 +75,7 @@ export const DeviceSettings = () => {
   // Метод для получения параметров камеры
   const fetchDeviceParameters = async () => {
     try {
-      const data = await getDeviceParameters(deviceId!, user.username);
+      const data = await getDeviceParameters(deviceId!, user.email);
       return data;
     } catch (e) {
       // сообщение

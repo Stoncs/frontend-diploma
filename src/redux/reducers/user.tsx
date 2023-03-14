@@ -2,7 +2,7 @@ import { UserDetails, UserAction } from "./../types";
 
 const initialState: UserDetails = {
   id: -1,
-  username: "",
+  email: "",
   fullname: "",
   organisation: "",
   phoneNumber: "",

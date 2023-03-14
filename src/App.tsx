@@ -10,7 +10,9 @@ import { PersistGate } from "redux-persist/integration/react";
 import { Router } from "./router";
 
 import "./scss/normalise.scss";
-import Locales from "./components/locales.component";
+import "./app.scss";
+
+import Locales from "./view/components/locales/locales.component";
 
 export const App = () => {
   function getInitialLocale() {
@@ -29,7 +31,10 @@ export const App = () => {
           locale={currentLocale}
           defaultLocale={LOCALES.RUSSIAN}
         >
-          <Locales />
+          <Locales
+            setCurrentLocale={setCurrentLocale}
+            currentLocale={currentLocale}
+          />
 
           <BrowserRouter>
             <Router />

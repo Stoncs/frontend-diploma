@@ -1,14 +1,18 @@
+import { AxiosError } from "axios";
 import jwt_decode from "jwt-decode";
 import { $authHost, $host } from ".";
 
 // Авторизация
-export const logIn = async (username: String, password: String) => {
-  const { data } = await $host.post("/api/auth/signin", { username, password });
+export const logIn = async (email: String, password: String) => {
+  const { data } = await $host.post("/api/auth/signin", {
+    username: email,
+    password,
+  });
   console.log(data);
 
   localStorage.setItem("token", data.token);
   localStorage.setItem("id", data.id);
-  localStorage.setItem("username", data.username);
+  localStorage.setItem("email", data.username);
   localStorage.setItem("fullname", data.fullname);
   localStorage.setItem("organisation", data.organisation);
   localStorage.setItem("phoneNumber", data.phoneNumber);
@@ -16,9 +20,11 @@ export const logIn = async (username: String, password: String) => {
   return data;
 };
 
-// Отправление письма на почту (username = email)
-export const sendEmail = async (username: String) => {
-  const { data } = await $host.post("/api/password/forgot", { username });
+// Отправление письма на почту
+export const sendEmail = async (email: String) => {
+  const { data } = await $host.post("/api/password/forgot", {
+    username: email,
+  });
   return data;
 };
 
@@ -35,7 +41,7 @@ export const changePassword = async (newPassword: String, token: String) => {
 export const changeProfile = async (
   type: String,
   value: String,
-  username: String
+  email: String
 ) => {
   const { data } = await $authHost.post(
     "/api/profile/changeprofile",
@@ -44,7 +50,7 @@ export const changeProfile = async (
       params: {
         type,
         value,
-        username,
+        username: email,
       },
     }
   );
@@ -67,17 +73,17 @@ export const getDevicesForUser = async (id: Number) => {
 };
 
 // Получение списка устройств для админа
-export const getDevicesAll = async (username: String) => {
+export const getDevicesAll = async (email: String) => {
   const { data } = await $authHost.get("/api/device/show_all", {
-    params: { username },
+    params: { username: email },
   });
   return data;
 };
 
 // Получение параметров устройства
-export const getDeviceParameters = async (id: String, username: String) => {
+export const getDeviceParameters = async (id: String, email: String) => {
   const { data } = await $authHost.get("/api/device/show_parameters", {
-    params: { id, username },
+    params: { id, username: email },
   });
   console.log(data);
   return data;
@@ -98,9 +104,20 @@ export const changeDeviceParameters = async (
 };
 
 // Получение информации о профиле
-export const getUserProfile = async (username: string) => {
-  const { data } = await $authHost.get("/api/profile/getinfo", {
-    params: { username },
-  });
-  return data;
+export const getUserProfile = async (email: string) => {
+  try {
+    const { data } = await $authHost.get("/api/profile/getinfo", {
+      params: { username: email },
+    });
+    return data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      // eslint-disable-next-line no-console
+      alert(error);
+      console.log(error.response?.data.message);
+      // ... дописать, что проверку не прошло
+    } else {
+      console.log("Unexpected error", error);
+    }
+  }
 };
