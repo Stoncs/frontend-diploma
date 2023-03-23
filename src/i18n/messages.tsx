@@ -12,7 +12,7 @@ const eng_signInUp = {
   authorization: "Sign in",
   signIn: "Sign in",
   signUp: "Sign up",
-  passwordRecovery: "Password recovery",
+  recoverPassword: "Password recovery",
   haveAnAccount: "Have an account? Sign in.",
   registration: "Registration",
   fieldIsRequired: "This field is required",
@@ -29,38 +29,59 @@ const ru_signInUp = {
   authorization: "Авторизация",
   signIn: "Войти",
   signUp: "Зарегистрироваться",
-  passwordRecovery: "Восстановить пароль",
+  recoverPassword: "Восстановить пароль",
   haveAnAccount: "Есть аккаунт? Войдите.",
   registration: "Регистрация",
   fieldIsRequired: "Поле обязательное для заполнения",
 };
 
+// Текст для страницы восстановления пароля
+const eng_recoveryPassword = {
+  recoveryPasswordHeader: "Recovery password",
+  enterEmail: "Enter your email address",
+  recoveryPasswordButton: "Send",
+};
+
+const ru_recoveryPassword = {
+  recoveryPasswordHeader: "Восстановление пароля",
+  enterEmail: "Введите адрес электронной почты",
+  recoveryPasswordButton: "Отправить",
+};
+
 // Текст ошибок
 const eng_errors = {
+  error: "Error!",
   errFieldRequired: "This field must not be empty",
   errEmailIncorrect: "Email is incorrect",
   errPhoneMaxLength: "Phone number too long",
   errPhoneIncorrect: "Phone number is incorrect",
   errPasswordMinLength: "Password is too short",
   errRepeatPassword: "Password mismatch",
+  errEmailNotFound: "User with this email was not found",
+  errUnexpected: "Unexpected error, please try again later",
 };
 
 const ru_errors = {
+  error: "Ошибка!",
   errFieldRequired: "Поле не должно быть пустым",
   errEmailIncorrect: "Почта некорректная",
   errPhoneMaxLength: "Номер телефона слишком длинный",
   errPhoneIncorrect: "Номер телефона некорректный",
   errPasswordMinLength: "Пароль слишком короткий",
   errRepeatPassword: "Пароли несовпадают",
+  errEmailNotFound: "Пользователь с таким email не найден",
+  errUnexpected: "Непредвиденная ошибка, попробуйте позже",
 };
 
 export const messages = {
   [LOCALES.ENGLISH]: {
     ...eng_signInUp,
+    ...eng_recoveryPassword,
     ...eng_errors,
   },
   [LOCALES.RUSSIAN]: {
     ...ru_signInUp,
+    ...ru_recoveryPassword,
     ...ru_errors,
   },
 };

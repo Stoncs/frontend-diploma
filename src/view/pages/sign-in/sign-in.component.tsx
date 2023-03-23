@@ -78,7 +78,7 @@ export default function SignIn() {
           </div>
           <div className={styles.recovery_link}>
             <Link to={"/password-recovery"}>
-              <FormattedMessage id="passwordRecovery" />
+              <FormattedMessage id="recoverPassword" />
             </Link>
           </div>
         </div>

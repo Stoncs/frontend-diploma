@@ -11,7 +11,7 @@ export type PopupDetails = {
   header: string | null;
   message: string | null;
   type: "normal" | "error" | null;
-  page: string | null;
+  page?: string | null;
 };
 
 export type UserAction = {
