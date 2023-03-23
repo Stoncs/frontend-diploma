@@ -1,13 +1,15 @@
 import classNames from "classnames";
 import React from "react";
+import { useNavigate } from "react-router";
 import { unsetPopup } from "~/redux/actions/popup";
 import { useAppDispatch } from "~/redux/hooks";
 import { PopupDetails } from "~/redux/types";
 
 import styles from "./popup.scss";
 
-export default function Popup({ header, message, type }: PopupDetails) {
+export default function Popup({ header, message, type, page }: PopupDetails) {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   return (
     <>
       <div
@@ -24,7 +26,12 @@ export default function Popup({ header, message, type }: PopupDetails) {
               [styles.button__normal]: type === "normal",
               [styles.button__error]: type === "error",
             })}
-            onClick={(e) => dispatch(unsetPopup(null))}
+            onClick={(e) => {
+              // Обнулить содержимое попапа, т.е. выключить попап
+              dispatch(unsetPopup(null));
+              // Если есть страница для перехода, то перейти на неё
+              page ? navigate(page) : "";
+            }}
           >
             OK
           </button>

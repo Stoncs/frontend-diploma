@@ -8,9 +8,10 @@ export type UserDetails = {
   isAuth: Boolean;
 };
 export type PopupDetails = {
-  header: string | undefined;
-  message: string | undefined;
-  type: string | undefined;
+  header: string | null;
+  message: string | null;
+  type: "normal" | "error" | null;
+  page: string | null;
 };
 
 export type UserAction = {
@@ -19,6 +20,6 @@ export type UserAction = {
 };
 
 export type PopupAction = {
-  type: String;
+  type: "SET_POPUP" | "UNSET_POPUP";
   payload: PopupDetails | null;
 };

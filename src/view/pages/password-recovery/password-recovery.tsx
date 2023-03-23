@@ -1,11 +1,14 @@
 import React, { FormEvent } from "react";
+import { useNavigate } from "react-router";
 import { sendEmail } from "~/http/api";
 import { setPopup } from "~/redux/actions/popup";
 import { useAppDispatch } from "~/redux/hooks";
+import { LOGIN_ROUTE } from "~/utils/consts";
 
 export const PasswordRecovery = () => {
   const [email, setEmail] = React.useState("");
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   // Если успешно, выводить, что сообщение отправлено
   const onFormSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -15,6 +18,7 @@ export const PasswordRecovery = () => {
         header: "Успешно!",
         message: "Для восстановления пароля проверьте почу.",
         type: "normal",
+        page: LOGIN_ROUTE,
       })
     );
   };
