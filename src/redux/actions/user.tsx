@@ -1,5 +1,3 @@
-import { UserDetails } from "../types";
-
 export const setUser = (user: any) => ({
   type: "SET_USER",
   payload: user,

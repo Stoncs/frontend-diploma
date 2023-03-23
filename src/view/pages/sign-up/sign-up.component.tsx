@@ -30,9 +30,9 @@ export default function SingUp() {
   const passwordString = intl.formatMessage({ id: "password" });
   const repeatPasswordString = intl.formatMessage({ id: "repeatPassword" });
 
-  const getTranslate = (id: string) => {
-    return intl.formatMessage({ id: id });
-  };
+  const phoneRegExp =
+    /^(8|\+7)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$/;
+
   // Валидация формы
   // !! Для телефона - если пустая строка, то выводит ошибку
   const schema = yup.object({
@@ -46,11 +46,9 @@ export default function SingUp() {
       ),
     phone: yup
       .string()
-      .max(12, intl.formatMessage({ id: "errPhoneMaxLength" }))
-      .matches(
-        /(\+7|8)[\s(]*\d{3}[)\s]*\d{3}[\s-]?\d{2}[\s-]?\d{2}/,
-        "errPhoneIncorrect"
-      ),
+      .matches(phoneRegExp, "errPhoneIncorrect")
+      .max(12, "errPhoneMaxLength"),
+
     fullname: yup.string(),
     organisation: yup.string(),
     password: yup.string().min(6, "errPasswordMinLength"),
@@ -113,7 +111,7 @@ export default function SingUp() {
 
           <InputRegister
             id="phone"
-            type="tel"
+            type="text"
             placeholder={phoneString}
             register={{ ...register("phone") }}
             errorMessageId={errors.phone?.message}
@@ -123,7 +121,7 @@ export default function SingUp() {
             id="fullName"
             type="text"
             placeholder={fullNameString}
-            register={{ ...register("phone") }}
+            register={{ ...register("fullName") }}
             errorMessageId={errors.fullName?.message}
           />
 

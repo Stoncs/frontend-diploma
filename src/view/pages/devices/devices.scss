@@ -3,5 +3,6 @@
 @import "./../../../scss/mixins.scss";
 
 .button {
-  @include blue-button;
+  @include button;
+  @include button--blue;
 }

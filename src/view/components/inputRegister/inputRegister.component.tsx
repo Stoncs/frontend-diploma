@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import { FormattedMessage } from "react-intl";
 import styles from "./inputRegister.scss";
 
@@ -27,7 +28,15 @@ export default function InputRegister({
       ) : (
         ""
       )}
-      <input type={type} id={id} placeholder={placeholder} {...register} />
+      <input
+        type={type}
+        id={id}
+        placeholder={placeholder}
+        {...register}
+        className={classNames(styles.input, {
+          [styles.input__error]: errorMessageId,
+        })}
+      />
       {errorMessageId ? (
         <p className={styles.error}>
           <FormattedMessage id={errorMessageId} />

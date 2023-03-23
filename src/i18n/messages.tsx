@@ -1,5 +1,6 @@
 import { LOCALES } from "./locales";
 
+// Текст для страниц регистрации и входа
 const eng_signInUp = {
   email: "Email",
   fullName: "Full name",
@@ -34,6 +35,7 @@ const ru_signInUp = {
   fieldIsRequired: "Поле обязательное для заполнения",
 };
 
+// Текст ошибок
 const eng_errors = {
   errFieldRequired: "This field must not be empty",
   errEmailIncorrect: "Email is incorrect",

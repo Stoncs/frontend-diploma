@@ -16,25 +16,31 @@
     position: absolute;
     width: 70%;
     bottom: 40px;
-    // left: 0;
     font-weight: $font-weight-400;
     font-size: 13px;
     color: $clr-white;
     opacity: 50%;
   }
 
-  input {
+  .input {
     all: unset;
+    position: relative;
+    z-index: 3;
+    display: block;
     width: 70%;
     min-width: 50px;
     padding: 10px 16px;
     font-size: 14px;
-    background: #ececec;
+    background: $clr-background-input;
     box-shadow: 0px 4px 9px rgba(48, 79, 159, 0.25),
       inset 2px 5px 8px rgba(0, 0, 0, 0.25);
+    border: 1px solid transparent;
     border-radius: 10px;
     color: black;
 
+    &__error {
+      border: 1px solid $clr-input-error-border;
+    }
     &::placeholder {
       font-weight: $font-weight-500;
       font-size: 0.9em;

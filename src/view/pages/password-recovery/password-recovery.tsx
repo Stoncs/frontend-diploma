@@ -1,13 +1,22 @@
 import React, { FormEvent } from "react";
 import { sendEmail } from "~/http/api";
+import { setPopup } from "~/redux/actions/popup";
+import { useAppDispatch } from "~/redux/hooks";
 
 export const PasswordRecovery = () => {
   const [email, setEmail] = React.useState("");
-
+  const dispatch = useAppDispatch();
   // Если успешно, выводить, что сообщение отправлено
-  const onFormSubmit = (e: FormEvent) => {
+  const onFormSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    sendEmail(email);
+    await sendEmail(email);
+    dispatch(
+      setPopup({
+        header: "Успешно!",
+        message: "Для восстановления пароля проверьте почу.",
+        type: "normal",
+      })
+    );
   };
 
   return (
