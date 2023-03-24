@@ -48,6 +48,20 @@ const ru_recoveryPassword = {
   recoveryPasswordButton: "Отправить",
 };
 
+const eng_devicesPage = {
+  nameDevice: "Name",
+  modeDevice: "Mode",
+  signalDevice: "Signal",
+  viewDevice: "View",
+};
+
+const ru_devicesPage = {
+  nameDevice: "Название",
+  modeDevice: "Режим работы",
+  signalDevice: "Сигнал",
+  viewDevice: "Вид",
+};
+
 // Текст ошибок
 const eng_errors = {
   error: "Error!",
@@ -77,11 +91,13 @@ export const messages = {
   [LOCALES.ENGLISH]: {
     ...eng_signInUp,
     ...eng_recoveryPassword,
+    ...eng_devicesPage,
     ...eng_errors,
   },
   [LOCALES.RUSSIAN]: {
     ...ru_signInUp,
     ...ru_recoveryPassword,
+    ...ru_devicesPage,
     ...ru_errors,
   },
 };

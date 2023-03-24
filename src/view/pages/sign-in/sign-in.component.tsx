@@ -28,7 +28,7 @@ export default function SignIn() {
       dispatch(
         setUser({
           id: data.id,
-          username: data.username,
+          email: data.username,
           fullname: data.fullname,
           organisation: data.organisation,
           phoneNumber: data.phoneNumber,
@@ -42,7 +42,10 @@ export default function SignIn() {
     } catch (error) {
       if (isAxiosError(error)) {
         const axiosError = error as AxiosError;
-        if (axiosError.response?.status == 400) {
+        if (
+          axiosError.response?.status == 400 ||
+          axiosError.response?.status == 401
+        ) {
           setError(true);
         }
       } else {

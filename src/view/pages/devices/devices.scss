@@ -6,3 +6,30 @@
   @include button;
   @include button--blue;
 }
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  border: 1px solid #828282;
+}
+
+th,
+td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #828282;
+  border-right: 1px solid #828282;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.header {
+  background-color: $clr-blue-header-table;
+  color: white;
+
+  th {
+    text-align: center;
+  }
+}
