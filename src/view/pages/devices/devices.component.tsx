@@ -166,7 +166,7 @@ export const Devices = () => {
         </div>
       </div>
       {user.roles.includes("ROLE_ADMIN") && addDeviceAdmin && (
-        <AddDeviceAdminPopup />
+        <AddDeviceAdminPopup setAddDeviceAdmin={setAddDeviceAdmin} />
       )}
     </>
   );
