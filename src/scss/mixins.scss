@@ -15,6 +15,25 @@
   background-color: $clr-blue-button;
 }
 
+@mixin input {
+  all: unset;
+  position: relative;
+  display: block;
+  padding: 10px 16px;
+  font-size: 14px;
+  background: $clr-background-input;
+  box-shadow: 0px 4px 9px rgba(48, 79, 159, 0.25),
+    inset 2px 5px 8px rgba(0, 0, 0, 0.25);
+  border: 1px solid transparent;
+  border-radius: 10px;
+  color: black;
+
+  &::placeholder {
+    font-weight: $font-weight-500;
+    font-size: 0.9em;
+  }
+}
+
 @mixin error-in-form {
   color: #ff0000;
 }

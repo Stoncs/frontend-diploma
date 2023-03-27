@@ -121,3 +121,11 @@ export const getUserProfile = async (email: string) => {
     }
   }
 };
+
+export const registerDevice = async (key: string, name: string) => {
+  console.log(key, name);
+  const { data } = await $authHost.post("/api/device/register_device", {
+    params: { key, name },
+  });
+  return data;
+};

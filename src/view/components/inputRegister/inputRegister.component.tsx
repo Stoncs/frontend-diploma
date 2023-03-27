@@ -20,7 +20,7 @@ export default function InputRegister({
   required,
 }: InputRegisterProps) {
   return (
-    <div className={styles.input}>
+    <div className={styles.input_register}>
       {required ? (
         <p className={styles.required}>
           <FormattedMessage id="fieldIsRequired" />

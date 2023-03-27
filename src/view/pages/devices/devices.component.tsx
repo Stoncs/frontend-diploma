@@ -6,10 +6,11 @@ import { getDevicesForUser, addNewDevice, getDevicesAll } from "~/http/api";
 import { useAppSelector } from "~/redux/hooks";
 import { UserDetails } from "~/redux/types";
 import { DEVICE_SETTINGS_ROUTE, LOGIN_ROUTE } from "~/utils/consts";
+import { AddDeviceAdminPopup } from "~/view/components/addDeviceAdminPopup/AddDeviceAdminPopup.component";
 import { Pagination } from "~/view/components/pagination/Pagination.component";
 
 import styles from "./devices.scss";
-
+// Поиск не сделан
 interface IDevice {
   id: number;
   key: string;
@@ -20,14 +21,18 @@ interface IDevice {
 }
 
 export const Devices = () => {
+  // Попап для добавления нового устройства для админа
+  const [addDeviceAdmin, setAddDeviceAdmin] = React.useState(false);
   // Поле для добавления новой камеры
-  const [key, setKey] = React.useState("");
+  const [keyDevice, setKeyDevice] = React.useState("");
+  // Поле для поиска
+  const [nameDevice, setNameDevice] = React.useState("");
   // Все камеры
   const [devices, setDevices] = React.useState<IDevice[]>([]);
   // Текущая страница в пагинации
   const [currentPage, setCurrentPage] = React.useState(1);
   // Количество камер на одной странице
-  const [devicesPerPage, setdevicesPerPage] = React.useState(1);
+  const [devicesPerPage, setdevicesPerPage] = React.useState(5);
 
   const navigate = useNavigate();
   const intl = useIntl();
@@ -60,7 +65,7 @@ export const Devices = () => {
 
   const onClickAddButton = async () => {
     try {
-      await addNewDevice(localStorage.getItem("id")!, key);
+      await addNewDevice(localStorage.getItem("id")!, keyDevice);
       alert("Успешно");
     } catch (error) {
       alert(error);
@@ -78,52 +83,91 @@ export const Devices = () => {
 
   return (
     <>
-      <div>
-        {user.roles.includes("ROLE_ADMIN") ? (
-          <button className={styles.button}>Добавить новое устройство</button>
-        ) : (
-          <>
-            <label>Ключ камеры:</label>
-            <input
-              name="key"
-              value={key}
-              onChange={(e) => setKey(e.target.value)}
-            />
-            <button onClick={() => onClickAddButton()}>
-              Добавить новое устройство
-            </button>
-          </>
-        )}
+      <div className={styles.container}>
+        <div className={styles.devices_window}>
+          <div className={styles.devices_window__top}>
+            <h1>{intl.formatMessage({ id: "devicesPageHeader" })}</h1>
+            <div className={styles.devices_window__control}>
+              {user.roles.includes("ROLE_ADMIN") ? (
+                <div
+                  className={`${styles.block_control} ${styles.button_admin}`}
+                >
+                  <button
+                    className={styles.button}
+                    onClick={() => setAddDeviceAdmin(true)}
+                  >
+                    Добавить новое устройство
+                  </button>
+                </div>
+              ) : (
+                <div className={styles.block_control}>
+                  <input
+                    className={styles.input}
+                    name="key"
+                    value={keyDevice}
+                    placeholder={intl.formatMessage({ id: "enterKeyDevice" })}
+                    onChange={(e) => setKeyDevice(e.target.value)}
+                  />
+                  <button
+                    className={styles.button_in_block}
+                    onClick={() => onClickAddButton()}
+                  >
+                    {intl.formatMessage({ id: "addNewDevice" })}
+                  </button>
+                </div>
+              )}
+              <div className={styles.block_control}>
+                <input
+                  className={styles.input}
+                  name="key"
+                  value={nameDevice}
+                  placeholder={intl.formatMessage({ id: "enterNameDevice" })}
+                  onChange={(e) => setNameDevice(e.target.value)}
+                />
+                <button
+                  className={styles.button_in_block}
+                  onClick={() => onClickAddButton()}
+                >
+                  {intl.formatMessage({ id: "addNewDevice" })}
+                </button>
+              </div>
+            </div>
+            <table>
+              <thead>
+                <tr className={styles.table_header}>
+                  <th>{intl.formatMessage({ id: "nameDevice" })}</th>
+                  <th>{intl.formatMessage({ id: "modeDevice" })}</th>
+                  <th>{intl.formatMessage({ id: "signalDevice" })}</th>
+                  <th>{intl.formatMessage({ id: "viewDevice" })}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {currentDevices.map((device) => (
+                  <tr key={device.id}>
+                    <td>
+                      <Link to={DEVICE_SETTINGS_ROUTE.slice(0, -3) + device.id}>
+                        {device.name}
+                      </Link>
+                    </td>
+                    <td>{device.mode}</td>
+                    <td>{device.signal}</td>
+                    <td>{device.view}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
+        </div>
       </div>
-      <table>
-        <thead>
-          <tr className={styles.header}>
-            <th>{intl.formatMessage({ id: "nameDevice" })}</th>
-            <th>{intl.formatMessage({ id: "modeDevice" })}</th>
-            <th>{intl.formatMessage({ id: "signalDevice" })}</th>
-            <th>{intl.formatMessage({ id: "viewDevice" })}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {currentDevices.map((device) => (
-            <tr key={device.id}>
-              <td>
-                <Link to={DEVICE_SETTINGS_ROUTE.slice(0, -3) + device.id}>
-                  {device.name}
-                </Link>
-              </td>
-              <td>{device.mode}</td>
-              <td>{device.signal}</td>
-              <td>{device.view}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={handlePageChange}
-      />
+      {user.roles.includes("ROLE_ADMIN") && addDeviceAdmin && (
+        <AddDeviceAdminPopup />
+      )}
     </>
   );
 };

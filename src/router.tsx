@@ -9,7 +9,7 @@ import {
   PROFILE_ROUTE,
   REGISTRATION_ROUTE,
 } from "./utils/consts";
-import Popup from "./view/components/popup/popup.component";
+import MessagePopup from "./view/components/messagePopup/MessagePopup.component";
 
 import { DeviceSettings } from "./view/pages/device-settings/device-settings.component";
 import { Devices } from "./view/pages/devices/devices.component";
@@ -35,7 +35,7 @@ export const Router = () => {
         <Route path={DEVICES_ROUTE} element={<Devices />} />
         <Route path={DEVICE_SETTINGS_ROUTE} element={<DeviceSettings />} />
       </Routes>
-      {popupInfo.header ? <Popup {...popupInfo} /> : ""}
+      {popupInfo.header ? <MessagePopup {...popupInfo} /> : ""}
     </>
   );
 };

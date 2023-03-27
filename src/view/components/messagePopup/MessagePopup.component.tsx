@@ -5,12 +5,17 @@ import { unsetPopup } from "~/redux/actions/popup";
 import { useAppDispatch } from "~/redux/hooks";
 import { PopupDetails } from "~/redux/types";
 
-import styles from "./popup.scss";
+import styles from "./messagePopup.scss";
 
 // Универсальный попап для уведомления пользователя
 // type - обычное уведомление или ошибочное
 // page - страница, на которую надо перейти, после закрытия попапа
-export default function Popup({ header, message, type, page }: PopupDetails) {
+export default function MessagePopup({
+  header,
+  message,
+  type,
+  page,
+}: PopupDetails) {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   return (

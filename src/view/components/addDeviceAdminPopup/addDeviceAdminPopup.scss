@@ -2,26 +2,6 @@
 @import "./../../../scss/colors.scss";
 @import "./../../../scss/mixins.scss";
 
-.container {
-  @include window-center;
-
-  z-index: 48;
-  width: 400px;
-  height: 250px;
-
-  &__normal {
-    @include window-normal-background;
-  }
-
-  &__error {
-    @include window-error-background;
-  }
-  &::after {
-    @include window-add-effect;
-    z-index: 49;
-  }
-}
-
 .content {
   position: relative;
   z-index: 50;
@@ -40,23 +20,38 @@
     font-weight: $font-weight-700;
   }
 
-  p {
-    font-weight: $font-weight-600;
+  .input {
+    @include input;
+    width: 50%;
+    height: 15px;
   }
 
   .button {
     @include button;
+    @include button--blue;
+  }
 
-    &__normal {
-      @include button--blue;
-    }
-
-    &__error {
-      background: $clr-red-button;
-    }
+  .x {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 20px;
   }
 }
 
+.container {
+  @include window-center;
+
+  @include window-normal-background;
+  z-index: 48;
+  width: 450px;
+  height: 350px;
+
+  &::after {
+    @include window-add-effect;
+    z-index: 49;
+  }
+}
 .backdrop {
   position: fixed;
   top: 0;

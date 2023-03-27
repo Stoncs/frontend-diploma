@@ -49,6 +49,10 @@ const ru_recoveryPassword = {
 };
 
 const eng_devicesPage = {
+  devicesPageHeader: "Available devices",
+  enterKeyDevice: "Camera key",
+  enterNameDevice: "Name device",
+  addNewDevice: "Add",
   nameDevice: "Name",
   modeDevice: "Mode",
   signalDevice: "Signal",
@@ -56,6 +60,10 @@ const eng_devicesPage = {
 };
 
 const ru_devicesPage = {
+  devicesPageHeader: "Доступные устройства",
+  enterKeyDevice: "Ключ камеры",
+  enterNameDevice: "Название",
+  addNewDevice: "Добавить",
   nameDevice: "Название",
   modeDevice: "Режим работы",
   signalDevice: "Сигнал",
