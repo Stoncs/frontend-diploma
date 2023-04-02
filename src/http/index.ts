@@ -16,6 +16,7 @@ const authInterceptor = (config: any) => {
   return config;
 };
 
+// В авторизованных запросах в заголовке jwt токен
 $authHost.interceptors.request.use(authInterceptor);
 
 export { $host, $authHost };

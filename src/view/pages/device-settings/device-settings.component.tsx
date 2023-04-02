@@ -1,6 +1,5 @@
-import { AxiosError } from "axios";
 import React from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getDeviceParameters, changeDeviceParameters } from "~/http/api";
 import { useAppSelector } from "~/redux/hooks";
 import { UserDetails } from "~/redux/types";
@@ -70,12 +69,13 @@ const DeviceField = ({ type, title, initialValue, id }: ProfileFieldProps) => {
 export const DeviceSettings = () => {
   const { id: deviceId } = useParams();
   const [deviceParameters, setDeviceParameters] = React.useState<IDevice>();
-  const user = useAppSelector<UserDetails>((state) => state.user);
+  // const user = useAppSelector<UserDetails>((state) => state.user);
+  const email = localStorage.getItem("email");
   const navigate = useNavigate();
   // Метод для получения параметров камеры
   const fetchDeviceParameters = async () => {
     try {
-      const data = await getDeviceParameters(deviceId!, user.email);
+      const data = await getDeviceParameters(deviceId!, email!);
       return data;
     } catch (e) {
       // сообщение

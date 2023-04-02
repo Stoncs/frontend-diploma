@@ -13,9 +13,6 @@ import "./scss/normalise.scss";
 import "./app.scss";
 
 import Locales from "./view/components/locales/locales.component";
-import MessagePopup from "./view/components/messagePopup/MessagePopup.component";
-import { useAppSelector } from "./redux/hooks";
-import { PopupDetails } from "./redux/types";
 
 export const App = () => {
   function getInitialLocale() {

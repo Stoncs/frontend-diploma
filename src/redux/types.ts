@@ -23,3 +23,11 @@ export type PopupAction = {
   type: "SET_POPUP" | "UNSET_POPUP";
   payload: PopupDetails | null;
 };
+
+export type MenuDetails = {
+  visible: boolean;
+};
+
+export type MenuAction = {
+  type: "SET_MENU" | "UNSET_MENU";
+};

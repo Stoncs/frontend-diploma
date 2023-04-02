@@ -16,6 +16,7 @@ export const logIn = async (email: String, password: String) => {
   localStorage.setItem("fullname", data.fullname);
   localStorage.setItem("organisation", data.organisation);
   localStorage.setItem("phoneNumber", data.phoneNumber);
+  localStorage.setItem("roles", data.roles);
 
   return data;
 };

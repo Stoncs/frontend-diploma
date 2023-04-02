@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router";
 import { useAppSelector } from "./redux/hooks";
-import { PopupDetails } from "./redux/types";
+import { MenuDetails, PopupDetails } from "./redux/types";
 import {
   CHANGE_PASSWORD_ROUTE,
   DEVICES_ROUTE,
@@ -19,11 +19,13 @@ import { PasswordRecovery } from "./view/pages/password-recovery/password-recove
 import { Profile } from "./view/pages/profile/profile.component";
 import SignIn from "./view/pages/sign-in/sign-in.component";
 import SingUp from "./view/pages/sign-up/sign-up.component";
+import { Menu } from "./view/components/menu/Menu.component";
 
 export const Router = () => {
   const popupInfo: PopupDetails = useAppSelector<PopupDetails>(
     (state) => state.popup
   );
+  const menu: MenuDetails = useAppSelector<MenuDetails>((state) => state.menu);
   return (
     <>
       <Routes>
@@ -36,6 +38,7 @@ export const Router = () => {
         <Route path={DEVICE_SETTINGS_ROUTE} element={<DeviceSettings />} />
       </Routes>
       {popupInfo.header ? <MessagePopup {...popupInfo} /> : ""}
+      {menu.visible ? <Menu /> : ""}
     </>
   );
 };

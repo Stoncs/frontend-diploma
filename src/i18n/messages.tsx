@@ -53,6 +53,7 @@ const eng_devicesPage = {
   enterKeyDevice: "Camera key",
   enterNameDevice: "Name device",
   addNewDevice: "Add",
+  searchDevice: "Search",
   nameDevice: "Name",
   modeDevice: "Mode",
   signalDevice: "Signal",
@@ -64,6 +65,7 @@ const ru_devicesPage = {
   enterKeyDevice: "Ключ камеры",
   enterNameDevice: "Название",
   addNewDevice: "Добавить",
+  searchDevice: "Поиск",
   nameDevice: "Название",
   modeDevice: "Режим работы",
   signalDevice: "Сигнал",
@@ -73,6 +75,7 @@ const ru_devicesPage = {
 // Текст ошибок
 const eng_errors = {
   error: "Error!",
+  errKeyNotFound: "Device with this key not found",
   errFieldRequired: "This field must not be empty",
   errEmailIncorrect: "Email is incorrect",
   errPhoneMaxLength: "Phone number too long",
@@ -85,6 +88,7 @@ const eng_errors = {
 
 const ru_errors = {
   error: "Ошибка!",
+  errKeyNotFound: "Устройство с таким ключом не найдено",
   errFieldRequired: "Поле не должно быть пустым",
   errEmailIncorrect: "Почта некорректная",
   errPhoneMaxLength: "Номер телефона слишком длинный",
