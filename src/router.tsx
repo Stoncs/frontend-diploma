@@ -5,9 +5,11 @@ import {
   CHANGE_PASSWORD_ROUTE,
   DEVICES_ROUTE,
   DEVICE_SETTINGS_ROUTE,
+  EVENTS_ROUTE,
   LOGIN_ROUTE,
   PROFILE_ROUTE,
   REGISTRATION_ROUTE,
+  STATISTICS_ROUTE,
 } from "./utils/consts";
 import MessagePopup from "./view/components/messagePopup/MessagePopup.component";
 
@@ -20,6 +22,8 @@ import { Profile } from "./view/pages/profile/profile.component";
 import SignIn from "./view/pages/sign-in/sign-in.component";
 import SingUp from "./view/pages/sign-up/sign-up.component";
 import { Menu } from "./view/components/menu/Menu.component";
+import { Events } from "./view/pages/events/Events.component";
+import { Statistics } from "./view/pages/statistics/Statistics.component";
 
 export const Router = () => {
   const popupInfo: PopupDetails = useAppSelector<PopupDetails>(
@@ -36,6 +40,8 @@ export const Router = () => {
         <Route path={PROFILE_ROUTE} element={<Profile />} />
         <Route path={DEVICES_ROUTE} element={<Devices />} />
         <Route path={DEVICE_SETTINGS_ROUTE} element={<DeviceSettings />} />
+        <Route path={EVENTS_ROUTE} element={<Events />} />
+        <Route path={STATISTICS_ROUTE} element={<Statistics />} />
       </Routes>
       {popupInfo.header ? <MessagePopup {...popupInfo} /> : ""}
       {menu.visible ? <Menu /> : ""}

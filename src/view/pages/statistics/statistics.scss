@@ -1,0 +1,88 @@
+@import "./../../../scss/fonts.scss";
+@import "./../../../scss/colors.scss";
+@import "./../../../scss/mixins.scss";
+
+.container {
+  @include window-center;
+  @include window-normal-background;
+
+  min-height: 320px;
+  max-height: 700px;
+
+  height: 100vh;
+  min-width: 320px;
+  max-width: 1200px;
+  width: 75vw;
+
+  &::after {
+    @include window-add-effect;
+  }
+}
+
+.statistics_window {
+  z-index: 3;
+  position: relative;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  color: #fff;
+
+  button {
+    @include button;
+    @include button--blue;
+  }
+
+  h1 {
+    display: block;
+    font-size: 22px;
+    margin-bottom: 10%;
+    font-family: $montserrat-font-family;
+    font-weight: $font-weight-700;
+    margin-bottom: 40px;
+    text-align: center;
+  }
+
+  button {
+    @include button;
+    @include button--blue;
+  }
+
+  &__control {
+    display: flex;
+    justify-content: space-between;
+
+    .block_control {
+      width: 50%;
+      display: flex;
+      margin-bottom: 100px;
+    }
+  }
+  .button_in_block {
+    margin-bottom: 20px;
+    margin-left: 10%;
+  }
+  .button_admin {
+    align-self: flex-start;
+    margin-left: 0;
+  }
+
+  &__top {
+    display: flex;
+    flex-direction: column;
+    height: 80%;
+    width: 90%;
+  }
+}
+
+// Define the styles for the container element
+.charts {
+  align-self: center;
+  background-color: white;
+  width: 70%;
+  height: 1000px;
+  overflow: scroll;
+  overflow-x: unset;
+}

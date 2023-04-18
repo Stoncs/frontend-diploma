@@ -130,3 +130,23 @@ export const registerDevice = async (key: string, name: string) => {
   });
   return data;
 };
+
+// Получение списка устройств для админа
+export const getEventsDevice = async (key: String) => {
+  try {
+    console.log(key);
+    const { data } = await $authHost.get("/api/event/show_events", {
+      params: { key },
+    });
+    return data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      // eslint-disable-next-line no-console
+      alert(error);
+      console.log(error.response?.data.message);
+      // ... дописать, что проверку не прошло
+    } else {
+      console.log("Unexpected error", error);
+    }
+  }
+};

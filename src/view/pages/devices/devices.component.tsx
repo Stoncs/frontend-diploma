@@ -1,17 +1,17 @@
 import { AxiosError } from "axios";
 import React from "react";
 import { useIntl } from "react-intl";
-import { Link, useNavigate, useNavigation } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { getDevicesForUser, addNewDevice, getDevicesAll } from "~/http/api";
 import { setPopup } from "~/redux/actions/popup";
 import { useAppDispatch, useAppSelector } from "~/redux/hooks";
 import { UserDetails } from "~/redux/types";
-import { DEVICE_SETTINGS_ROUTE, LOGIN_ROUTE } from "~/utils/consts";
+import { EVENTS_ROUTE, LOGIN_ROUTE } from "~/utils/consts";
 import { AddDeviceAdminPopup } from "~/view/components/addDeviceAdminPopup/AddDeviceAdminPopup.component";
+import { MenuIcon } from "~/view/components/menuIcon/MenuIcon.component";
 import { Pagination } from "~/view/components/pagination/Pagination.component";
 
 import styles from "./devices.scss";
-import { MenuIcon } from "~/view/components/menuIcon/menuIcon.component";
 
 // Поиск не сделан
 // При добавлении устройства с несуществующим ключом сделать попап ошибку
@@ -36,7 +36,7 @@ export const Devices = () => {
   // Текущая страница в пагинации
   const [currentPage, setCurrentPage] = React.useState(1);
   // Количество камер на одной странице
-  const [devicesPerPage, setdevicesPerPage] = React.useState(5);
+  const [devicesPerPage, setdevicesPerPage] = React.useState(10);
 
   const navigate = useNavigate();
   const intl = useIntl();
@@ -180,7 +180,7 @@ export const Devices = () => {
                 {currentDevices.map((device) => (
                   <tr key={device.id}>
                     <td>
-                      <Link to={DEVICE_SETTINGS_ROUTE.slice(0, -3) + device.id}>
+                      <Link to={EVENTS_ROUTE.slice(0, -4) + device.key}>
                         {device.name}
                       </Link>
                     </td>
