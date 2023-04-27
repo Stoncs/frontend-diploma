@@ -116,7 +116,7 @@ export const Statistics = () => {
     plugins: {
       title: {
         display: true,
-        text: "Типы автомобилей",
+        text: "Типы событий",
       },
     },
     responsive: true,
@@ -137,7 +137,7 @@ export const Statistics = () => {
     plugins: {
       title: {
         display: true,
-        text: "Типы событий",
+        text: "Типы автомобилей",
       },
     },
     responsive: true,

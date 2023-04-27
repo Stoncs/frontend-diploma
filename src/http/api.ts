@@ -106,21 +106,10 @@ export const changeDeviceParameters = async (
 
 // Получение информации о профиле
 export const getUserProfile = async (email: string) => {
-  try {
-    const { data } = await $authHost.get("/api/profile/getinfo", {
-      params: { username: email },
-    });
-    return data;
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      // eslint-disable-next-line no-console
-      alert(error);
-      console.log(error.response?.data.message);
-      // ... дописать, что проверку не прошло
-    } else {
-      console.log("Unexpected error", error);
-    }
-  }
+  const { data } = await $authHost.get("/api/profile/getinfo", {
+    params: { username: email },
+  });
+  return data;
 };
 
 export const registerDevice = async (key: string, name: string) => {

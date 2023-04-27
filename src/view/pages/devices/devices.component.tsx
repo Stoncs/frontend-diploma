@@ -70,7 +70,6 @@ export const Devices = () => {
   };
   // get devices
   React.useEffect(() => {
-    console.log("devices get");
     fetchDevices();
   }, []);
 
