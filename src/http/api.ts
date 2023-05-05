@@ -113,7 +113,6 @@ export const getUserProfile = async (email: string) => {
 };
 
 export const registerDevice = async (key: string, name: string) => {
-  console.log(key, name);
   const { data } = await $authHost.post("/api/device/register_device", null, {
     params: { key, name },
   });
@@ -138,4 +137,40 @@ export const getEventsDevice = async (key: String) => {
       console.log("Unexpected error", error);
     }
   }
+};
+
+export const getAverageSpeedPerHour = async (
+  year: number,
+  month: number,
+  day: number,
+  id: number
+) => {
+  const { data } = await $authHost.get("/api/event/average_speed", {
+    params: { year, month, day, id },
+  });
+  return data;
+};
+
+export const getTypeOfCarPerHour = async (
+  year: number,
+  month: number,
+  day: number,
+  id: number
+) => {
+  const { data } = await $authHost.get("/api/event/type_of_car", {
+    params: { year, month, day, id },
+  });
+  return data;
+};
+
+export const getTypeOfEventPerHour = async (
+  year: number,
+  month: number,
+  day: number,
+  id: number
+) => {
+  const { data } = await $authHost.get("/api/event/type_of_event", {
+    params: { year, month, day, id },
+  });
+  return data;
 };

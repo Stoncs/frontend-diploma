@@ -8,13 +8,17 @@ interface LocalesProps {
 }
 
 const Locales = ({ setCurrentLocale, currentLocale }: LocalesProps) => {
+  const changeLanguage = (lang: string) => {
+    setCurrentLocale(lang);
+    localStorage.setItem("locale", lang);
+  };
   return (
     <div className={styles.container}>
       <button
         className={
           currentLocale == LOCALES.RUSSIAN ? styles.btn_active : styles.btn
         }
-        onClick={() => setCurrentLocale(LOCALES.RUSSIAN)}
+        onClick={() => changeLanguage(LOCALES.RUSSIAN)}
       >
         Ru
       </button>
@@ -22,7 +26,7 @@ const Locales = ({ setCurrentLocale, currentLocale }: LocalesProps) => {
         className={
           currentLocale == LOCALES.ENGLISH ? styles.btn_active : styles.btn
         }
-        onClick={() => setCurrentLocale(LOCALES.ENGLISH)}
+        onClick={() => changeLanguage(LOCALES.ENGLISH)}
       >
         En
       </button>

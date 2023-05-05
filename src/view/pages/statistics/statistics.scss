@@ -38,10 +38,10 @@
   h1 {
     display: block;
     font-size: 22px;
-    margin-bottom: 10%;
+    margin-top: 40px;
     font-family: $montserrat-font-family;
     font-weight: $font-weight-700;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
     text-align: center;
   }
 
@@ -50,19 +50,23 @@
     @include button--blue;
   }
 
+  input,
+  select {
+    height: 80%;
+  }
   &__control {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
 
     .block_control {
-      width: 50%;
+      width: 60%;
       display: flex;
-      margin-bottom: 100px;
+      justify-content: space-between;
+      margin-bottom: 20px;
     }
   }
   .button_in_block {
     margin-bottom: 20px;
-    margin-left: 10%;
   }
   .button_admin {
     align-self: flex-start;
@@ -72,7 +76,6 @@
   &__top {
     display: flex;
     flex-direction: column;
-    height: 80%;
     width: 90%;
   }
 }
@@ -81,8 +84,13 @@
 .charts {
   align-self: center;
   background-color: white;
-  width: 70%;
-  height: 1000px;
+  width: 80%;
+  height: 1500px;
   overflow: scroll;
   overflow-x: unset;
+  margin-bottom: 100px;
+  canvas {
+    width: 100% !important;
+    height: 100% !important;
+  }
 }

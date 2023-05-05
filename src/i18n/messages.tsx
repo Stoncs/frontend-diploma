@@ -25,7 +25,7 @@ const ru_signInUp = {
   organisation: "Организация",
   password: "Пароль",
   repeatPassword: "Повторите пароль",
-  signInLabel: "Регистрация",
+  signInLabel: "Войти в систему",
   authorization: "Авторизация",
   signIn: "Войти",
   signUp: "Зарегистрироваться",

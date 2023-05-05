@@ -59,7 +59,7 @@ export default function SignIn() {
       <form className={styles.sign_form} onSubmit={onSubmit}>
         <div className={styles.sign_form__header}>
           <h1>
-            <FormattedMessage id="signIn" />
+            <FormattedMessage id="signInLabel" />
           </h1>
           <div className={styles.sign_form__input}>
             <input

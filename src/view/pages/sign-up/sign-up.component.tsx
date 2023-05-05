@@ -97,7 +97,7 @@ export default function SingUp() {
       <form className={styles.sign_form} onSubmit={handleSubmit(onSubmit)}>
         <div className={styles.sign_form__header}>
           <h1>
-            <FormattedMessage id="signInLabel" />
+            <FormattedMessage id="registration" />
           </h1>
 
           <InputRegister
