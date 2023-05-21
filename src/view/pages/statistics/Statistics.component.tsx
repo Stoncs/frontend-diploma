@@ -3,6 +3,7 @@ import React from "react";
 import { Bar, Line } from "react-chartjs-2";
 import { useNavigate, useParams } from "react-router";
 import {
+  getAverageSpeedByTypeCar,
   getAverageSpeedPerDay,
   getAverageSpeedPerHour,
   getEventsDevice,
@@ -53,6 +54,7 @@ export const Statistics = () => {
   const [countTypeCar, setCountTypeCar] = React.useState<Array<number>>([
     0, 0, 0, 0,
   ]);
+  const [avSpeedByTypeCar, setAvSpeedByTypeCar] = React.useState([0, 0, 0, 0]);
 
   const valuesSelect = ["Дата", "Период"];
   const [stateSelect, setStateSelect] = React.useState(
@@ -239,7 +241,7 @@ export const Statistics = () => {
     localStorage.setItem(key, newDate);
   };
 
-  const fetchEvents = async () => {
+  const fetchStatistic = async () => {
     try {
       let avSpeed, typesCar, typesEvent;
       if (stateSelect === valuesSelect[0]) {
@@ -264,6 +266,17 @@ export const Statistics = () => {
           month,
           day,
           Number(keyDevice!)
+        );
+        setAvSpeedByTypeCar(
+          await getAverageSpeedByTypeCar(
+            year,
+            month,
+            day,
+            year,
+            month,
+            day,
+            Number(keyDevice!)
+          )
         );
       } else {
         const splitDateFrom = date1.split("-");
@@ -301,6 +314,17 @@ export const Statistics = () => {
           dayTo,
           Number(keyDevice!)
         );
+        setAvSpeedByTypeCar(
+          await getAverageSpeedByTypeCar(
+            yearFrom,
+            monthFrom,
+            dayFrom,
+            yearTo,
+            monthTo,
+            dayTo,
+            Number(keyDevice!)
+          )
+        );
       }
 
       const dataForTypeCar = Array.from({ length: typesCar.length }, () =>
@@ -309,6 +333,7 @@ export const Statistics = () => {
       const dataForTypeEvent = Array.from({ length: typesEvent.length }, () =>
         Array(3).fill(0)
       );
+
       // Подготовка информации о типах машин для графика
       let j = 0;
       let count = 0;
@@ -350,7 +375,7 @@ export const Statistics = () => {
   };
   // get devices
   React.useEffect(() => {
-    fetchEvents();
+    fetchStatistic();
   }, [date, date1, date2, stateSelect]);
 
   return (
@@ -411,10 +436,23 @@ export const Statistics = () => {
           </div>
           <div className={styles.content__text}>
             <p>Всего транспорта: {countCar}</p>
-            <p>Количество легковых автомобилей: {countTypeCar[0]}</p>
-            <p>Количество грузовых автомобилей: {countTypeCar[1]}</p>
-            <p>Количество специального траснпорта: {countTypeCar[2]}</p>
+            <p>Количество легковых: {countTypeCar[0]}</p>
+            <p>
+              Средняя скорость легковых: {avSpeedByTypeCar[0].toFixed(2)} км/ч
+            </p>
+            <p>Количество грузовых: {countTypeCar[1]}</p>
+            <p>
+              Средняя скорость грузовых: {avSpeedByTypeCar[1].toFixed(2)} км/ч
+            </p>
+            <p>Количество спец. транспорта: {countTypeCar[2]}</p>
+            <p>
+              Средняя скорость спец. транспорта:{" "}
+              {avSpeedByTypeCar[2].toFixed(2)} км/ч
+            </p>
             <p>Количество автобусов: {countTypeCar[3]}</p>
+            <p>
+              Средняя скорость автобусов: {avSpeedByTypeCar[3].toFixed(2)} км/ч
+            </p>
           </div>
         </div>
 

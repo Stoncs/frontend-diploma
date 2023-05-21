@@ -245,3 +245,21 @@ export const getTypeOfEventPerDay = async (
   });
   return data;
 };
+
+export const getAverageSpeedByTypeCar = async (
+  yearFrom: number,
+  monthFrom: number,
+  dayFrom: number,
+  yearTo: number,
+  monthTo: number,
+  dayTo: number,
+  id: number
+) => {
+  const { data } = await $authHost.get(
+    "/api/event/average_speed_by_type_of_car",
+    {
+      params: { yearFrom, monthFrom, dayFrom, yearTo, monthTo, dayTo, id },
+    }
+  );
+  return data;
+};
