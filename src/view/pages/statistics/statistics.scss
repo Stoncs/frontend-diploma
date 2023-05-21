@@ -38,10 +38,10 @@
   h1 {
     display: block;
     font-size: 22px;
-    margin-top: 40px;
+    margin-top: 50px;
     font-family: $montserrat-font-family;
     font-weight: $font-weight-700;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     text-align: center;
   }
 
@@ -66,7 +66,7 @@
     }
   }
   .button_in_block {
-    margin-bottom: 20px;
+    // margin-bottom: 20px;
   }
   .button_admin {
     align-self: flex-start;
@@ -81,16 +81,29 @@
 }
 
 // Define the styles for the container element
-.charts {
-  align-self: center;
-  background-color: white;
-  width: 80%;
-  height: 1500px;
-  overflow: scroll;
-  overflow-x: unset;
-  margin-bottom: 100px;
-  canvas {
-    width: 100% !important;
-    height: 100% !important;
+.content {
+  display: flex;
+  justify-content: space-evenly;
+  // align-items: center;
+  width: 100%;
+  &__charts {
+    background-color: white;
+    width: 50%;
+    height: 500px;
+    overflow: scroll;
+    overflow-x: unset;
+    margin-bottom: 100px;
+    canvas {
+      width: 100% !important;
+      height: 60% !important;
+    }
+  }
+  &__text {
+    padding: 10px 10px;
+    width: 40%;
+    height: 85%;
+    background-color: rgba(255, 255, 255, 50%);
+    color: black;
+    border-radius: 20px;
   }
 }

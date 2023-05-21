@@ -5,7 +5,6 @@ import { useAppDispatch } from "~/redux/hooks";
 import styles from "./profile.scss";
 import { MenuIcon } from "~/view/components/menuIcon/MenuIcon.component";
 import profile_icon from "./../../../assets/profile_icon.png";
-import { log } from "console";
 import { useNavigate } from "react-router";
 import { LOGIN_ROUTE } from "~/utils/consts";
 import { setPopup } from "~/redux/actions/popup";

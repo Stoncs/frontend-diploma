@@ -120,13 +120,39 @@ export const registerDevice = async (key: string, name: string) => {
 };
 
 // Получение списка устройств для админа
-export const getEventsDevice = async (key: String) => {
+export const getEventsDevice = async (
+  id: String,
+  typeOfFiltration: String,
+  typeOfCar: String,
+  typeOfEvent: String
+) => {
   try {
-    console.log(key);
-    const { data } = await $authHost.get("/api/event/show_events", {
-      params: { key },
-    });
-    return data;
+    switch (typeOfFiltration) {
+      case "3": {
+        const { data } = await $authHost.get("/api/event/show_events", {
+          params: { id, typeOfFiltration },
+        });
+        return data;
+      }
+      case "2": {
+        const { data } = await $authHost.get("/api/event/show_events", {
+          params: { id, typeOfFiltration, typeOfCar, typeOfEvent },
+        });
+        return data;
+      }
+      case "1": {
+        const { data } = await $authHost.get("/api/event/show_events", {
+          params: { id, typeOfFiltration, typeOfCar },
+        });
+        return data;
+      }
+      default: {
+        const { data } = await $authHost.get("/api/event/show_events", {
+          params: { id, typeOfFiltration, typeOfEvent },
+        });
+        return data;
+      }
+    }
   } catch (error) {
     if (error instanceof AxiosError) {
       // eslint-disable-next-line no-console
@@ -171,6 +197,51 @@ export const getTypeOfEventPerHour = async (
 ) => {
   const { data } = await $authHost.get("/api/event/type_of_event", {
     params: { year, month, day, id },
+  });
+  return data;
+};
+
+export const getAverageSpeedPerDay = async (
+  yearFrom: number,
+  monthFrom: number,
+  dayFrom: number,
+  yearTo: number,
+  monthTo: number,
+  dayTo: number,
+  id: number
+) => {
+  const { data } = await $authHost.get("/api/event/average_speed_per_day", {
+    params: { yearFrom, monthFrom, dayFrom, yearTo, monthTo, dayTo, id },
+  });
+  return data;
+};
+
+export const getTypeOfCarPerDay = async (
+  yearFrom: number,
+  monthFrom: number,
+  dayFrom: number,
+  yearTo: number,
+  monthTo: number,
+  dayTo: number,
+  id: number
+) => {
+  const { data } = await $authHost.get("/api/event/type_of_car_per_day", {
+    params: { yearFrom, monthFrom, dayFrom, yearTo, monthTo, dayTo, id },
+  });
+  return data;
+};
+
+export const getTypeOfEventPerDay = async (
+  yearFrom: number,
+  monthFrom: number,
+  dayFrom: number,
+  yearTo: number,
+  monthTo: number,
+  dayTo: number,
+  id: number
+) => {
+  const { data } = await $authHost.get("/api/event/type_of_event_per_day", {
+    params: { yearFrom, monthFrom, dayFrom, yearTo, monthTo, dayTo, id },
   });
   return data;
 };

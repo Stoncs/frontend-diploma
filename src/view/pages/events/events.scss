@@ -38,11 +38,11 @@
   h1 {
     display: block;
     font-size: 22px;
-    margin-bottom: 10%;
     font-family: $montserrat-font-family;
     font-weight: $font-weight-700;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
     text-align: center;
+    margin-top: -25px;
   }
 
   &__control {
@@ -71,7 +71,7 @@
 
 .input {
   @include input;
-  width: 50%;
+  width: 600px;
   height: 15px;
 }
 
@@ -97,4 +97,19 @@ td {
     text-align: center;
     color: white;
   }
+}
+
+.action_photo {
+  display: block;
+  width: 25px;
+  cursor: pointer;
+}
+
+.pagination {
+  margin-bottom: -20px;
+}
+
+.select {
+  height: 40px;
+  margin-left: 40px;
 }

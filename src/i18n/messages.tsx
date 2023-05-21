@@ -58,6 +58,7 @@ const eng_devicesPage = {
   modeDevice: "Mode",
   signalDevice: "Signal",
   viewDevice: "View",
+  address: "Address",
 };
 
 const ru_devicesPage = {
@@ -70,6 +71,7 @@ const ru_devicesPage = {
   modeDevice: "Режим работы",
   signalDevice: "Сигнал",
   viewDevice: "Вид",
+  address: "Адрес",
 };
 
 // Текст ошибок

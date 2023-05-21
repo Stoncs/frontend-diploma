@@ -3,9 +3,12 @@ import React from "react";
 import { Bar, Line } from "react-chartjs-2";
 import { useNavigate, useParams } from "react-router";
 import {
+  getAverageSpeedPerDay,
   getAverageSpeedPerHour,
   getEventsDevice,
+  getTypeOfCarPerDay,
   getTypeOfCarPerHour,
+  getTypeOfEventPerDay,
   getTypeOfEventPerHour,
 } from "~/http/api";
 import { EVENTS_ROUTE, LOGIN_ROUTE } from "~/utils/consts";
@@ -38,26 +41,26 @@ ChartJS.register(
   Legend
 );
 
-interface IEvent {
-  id: number;
-  carId: string;
-  speed: string;
-  time: string;
-  typeOfCar: string;
-  typeOfEvent: string;
-}
-
 export const Statistics = () => {
-  // Все камеры
+  // Данные для графиков
   const [averageSpeedData, setAverageSpeedData] = React.useState<number[]>([]);
   const [typeCarData, setTypeCarData] = React.useState<Array<number[]>>([]);
   const [typeEventData, setTypeEventData] = React.useState<Array<number[]>>([]);
+
+  // Подсчёт всего автомобилей
+  const [countCar, setCountCar] = React.useState(0);
+  // Подсчёт по типам автомобилей
+  const [countTypeCar, setCountTypeCar] = React.useState<Array<number>>([
+    0, 0, 0, 0,
+  ]);
+
   const valuesSelect = ["Дата", "Период"];
   const [stateSelect, setStateSelect] = React.useState(
     localStorage.getItem("valueSelect")
       ? String(localStorage.getItem("valueSelect"))
       : valuesSelect[0]
   );
+
   const [date, setDate] = React.useState(
     localStorage.getItem("date")
       ? String(localStorage.getItem("date"))
@@ -73,11 +76,15 @@ export const Statistics = () => {
       ? String(localStorage.getItem("date2"))
       : moment().format("YYYY-MM-DD")
   );
-  const { key: keyDevice } = useParams();
+  const { id: keyDevice } = useParams();
   const navigate = useNavigate();
-  const labels = Array.from({ length: 24 }, (_, i) => i + 1);
   const dataBarEventType = {
-    labels,
+    labels:
+      stateSelect === valuesSelect[0]
+        ? typeEventData.map((_, i) => String(i + 1))
+        : typeEventData.map((_, i) =>
+            moment(date1).add(i, "days").format("DD.MM")
+          ),
     datasets: [
       {
         label: "Проезд",
@@ -100,7 +107,12 @@ export const Statistics = () => {
     ],
   };
   const dataBarCarType = {
-    labels,
+    labels:
+      stateSelect === valuesSelect[0]
+        ? typeEventData.map((_, i) => String(i + 1))
+        : typeEventData.map((_, i) =>
+            moment(date1).add(i, "days").format("DD.MM")
+          ),
     datasets: [
       {
         label: "Легковая",
@@ -129,7 +141,12 @@ export const Statistics = () => {
     ],
   };
   const dataLineAverageSpeed = {
-    labels,
+    labels:
+      stateSelect === valuesSelect[0]
+        ? typeEventData.map((_, i) => String(i + 1))
+        : typeEventData.map((_, i) =>
+            moment(date1).add(i, "days").format("DD.MM")
+          ),
     datasets: [
       {
         label: "Средняя скорость",
@@ -224,39 +241,99 @@ export const Statistics = () => {
 
   const fetchEvents = async () => {
     try {
-      const dataForTypeCar = Array.from({ length: 24 }, () => Array(4).fill(0));
-      const dataForTypeEvent = Array.from({ length: 24 }, () =>
+      let avSpeed, typesCar, typesEvent;
+      if (stateSelect === valuesSelect[0]) {
+        const splitDate = date.split("-");
+        const year = +splitDate[0];
+        const month = +splitDate[1];
+        const day = +splitDate[2];
+        avSpeed = await getAverageSpeedPerHour(
+          year,
+          month,
+          day,
+          Number(keyDevice!)
+        );
+        typesCar = await getTypeOfCarPerHour(
+          year,
+          month,
+          day,
+          Number(keyDevice!)
+        );
+        typesEvent = await getTypeOfEventPerHour(
+          year,
+          month,
+          day,
+          Number(keyDevice!)
+        );
+      } else {
+        const splitDateFrom = date1.split("-");
+        const splitDateTo = date2.split("-");
+        const yearFrom = +splitDateFrom[0];
+        const monthFrom = +splitDateFrom[1];
+        const dayFrom = +splitDateFrom[2];
+        const yearTo = +splitDateTo[0];
+        const monthTo = +splitDateTo[1];
+        const dayTo = +splitDateTo[2];
+        avSpeed = await getAverageSpeedPerDay(
+          yearFrom,
+          monthFrom,
+          dayFrom,
+          yearTo,
+          monthTo,
+          dayTo,
+          Number(keyDevice!)
+        );
+        typesCar = await getTypeOfCarPerDay(
+          yearFrom,
+          monthFrom,
+          dayFrom,
+          yearTo,
+          monthTo,
+          dayTo,
+          Number(keyDevice!)
+        );
+        typesEvent = await getTypeOfEventPerDay(
+          yearFrom,
+          monthFrom,
+          dayFrom,
+          yearTo,
+          monthTo,
+          dayTo,
+          Number(keyDevice!)
+        );
+      }
+
+      const dataForTypeCar = Array.from({ length: typesCar.length }, () =>
+        Array(4).fill(0)
+      );
+      const dataForTypeEvent = Array.from({ length: typesEvent.length }, () =>
         Array(3).fill(0)
       );
-
-      const splitDate = date.split("-");
-      const year = +splitDate[0];
-      const month = +splitDate[1];
-      const day = +splitDate[2];
-
-      const avSpeed = await getAverageSpeedPerHour(year, month, day, 23);
-      const typesCar = await getTypeOfCarPerHour(year, month, day, 23);
-      const typesEvent = await getTypeOfEventPerHour(year, month, day, 23);
-
       // Подготовка информации о типах машин для графика
-      let hour = 0;
+      let j = 0;
+      let count = 0;
+      const countType = [0, 0, 0, 0];
       for (const obj of typesCar) {
         for (let i = 0; i < 4; i++) {
-          obj[i]
-            ? (dataForTypeCar[hour][i] = obj[i])
-            : (dataForTypeCar[hour][i] = 0);
+          if (obj[i]) {
+            dataForTypeCar[j][i] = obj[i];
+            countType[i] += obj[i];
+            count += obj[i];
+          } else dataForTypeCar[j][i] = 0;
         }
-        hour++;
+        j++;
       }
+      setCountTypeCar(countType);
+      setCountCar(count);
       // Подготовка информации о типах события для графика
-      hour = 0;
+      j = 0;
       for (const obj of typesEvent) {
         for (let i = 0; i < 3; i++) {
           obj[i]
-            ? (dataForTypeEvent[hour][i] = obj[i])
-            : (dataForTypeEvent[hour][i] = 0);
+            ? (dataForTypeEvent[j][i] = obj[i])
+            : (dataForTypeEvent[j][i] = 0);
         }
-        hour++;
+        j++;
       }
 
       // Сохранение информации для графиков
@@ -274,7 +351,7 @@ export const Statistics = () => {
   // get devices
   React.useEffect(() => {
     fetchEvents();
-  }, [date]);
+  }, [date, date1, date2, stateSelect]);
 
   return (
     <div className={styles.container}>
@@ -312,28 +389,35 @@ export const Statistics = () => {
                     value={date2}
                     onChange={(e) => onChangeDate(e, "date2")}
                   />
-                  <button className={styles.button_in_block}>
-                    Посмотреть статистику
-                  </button>
                 </>
               )}
 
               <button
                 className={styles.button_in_block}
-                onClick={() => navigate(EVENTS_ROUTE.slice(0, -4) + keyDevice)}
+                onClick={() => navigate(EVENTS_ROUTE.slice(0, -3) + keyDevice)}
               >
                 События
               </button>
             </div>
           </div>
         </div>
-        <div className={styles.charts}>
-          <Bar data={dataBarEventType} options={options1} />
+        <div className={styles.content}>
+          <div className={styles.content__charts}>
+            <Bar data={dataBarEventType} options={options1} />
 
-          <Bar data={dataBarCarType} options={options2} />
+            <Bar data={dataBarCarType} options={options2} />
 
-          <Line data={dataLineAverageSpeed} options={options3} />
+            <Line data={dataLineAverageSpeed} options={options3} />
+          </div>
+          <div className={styles.content__text}>
+            <p>Всего транспорта: {countCar}</p>
+            <p>Количество легковых автомобилей: {countTypeCar[0]}</p>
+            <p>Количество грузовых автомобилей: {countTypeCar[1]}</p>
+            <p>Количество специального траснпорта: {countTypeCar[2]}</p>
+            <p>Количество автобусов: {countTypeCar[3]}</p>
+          </div>
         </div>
+
         <MenuIcon />
       </div>
     </div>

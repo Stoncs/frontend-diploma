@@ -22,6 +22,7 @@ interface IDevice {
   mode: string;
   signal: string;
   view: string;
+  address: string;
 }
 
 export const Devices = () => {
@@ -169,23 +170,23 @@ export const Devices = () => {
             <table>
               <thead>
                 <tr className={styles.table_header}>
-                  <th>{intl.formatMessage({ id: "nameDevice" })}</th>
-                  <th>{intl.formatMessage({ id: "modeDevice" })}</th>
-                  <th>{intl.formatMessage({ id: "signalDevice" })}</th>
-                  <th>{intl.formatMessage({ id: "viewDevice" })}</th>
+                  <th className={styles.first}>
+                    {intl.formatMessage({ id: "nameDevice" })}
+                  </th>
+                  <th className={styles.second}>
+                    {intl.formatMessage({ id: "address" })}
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 {currentDevices.map((device) => (
                   <tr key={device.id}>
-                    <td>
-                      <Link to={EVENTS_ROUTE.slice(0, -4) + device.key}>
+                    <td className={styles.first}>
+                      <Link to={EVENTS_ROUTE.slice(0, -3) + device.id}>
                         {device.name}
                       </Link>
                     </td>
-                    <td>{device.mode}</td>
-                    <td>{device.signal}</td>
-                    <td>{device.view}</td>
+                    <td className={styles.second}>{device.address}</td>
                   </tr>
                 ))}
               </tbody>

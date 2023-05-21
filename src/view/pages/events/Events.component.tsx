@@ -1,26 +1,14 @@
 import { AxiosError } from "axios";
 import React from "react";
 import { useIntl } from "react-intl";
-import { Link, useNavigate, useNavigation, useParams } from "react-router-dom";
-import {
-  getDevicesForUser,
-  addNewDevice,
-  getDevicesAll,
-  getEventsDevice,
-} from "~/http/api";
-import { setPopup } from "~/redux/actions/popup";
-import { useAppDispatch, useAppSelector } from "~/redux/hooks";
-import { UserDetails } from "~/redux/types";
-import {
-  DEVICE_SETTINGS_ROUTE,
-  LOGIN_ROUTE,
-  STATISTICS_ROUTE,
-} from "~/utils/consts";
-import { AddDeviceAdminPopup } from "~/view/components/addDeviceAdminPopup/AddDeviceAdminPopup.component";
+import { useNavigate, useParams } from "react-router-dom";
+import { getEventsDevice } from "~/http/api";
+import { LOGIN_ROUTE, STATISTICS_ROUTE } from "~/utils/consts";
 import { MenuIcon } from "~/view/components/menuIcon/MenuIcon.component";
 import { Pagination } from "~/view/components/pagination/Pagination.component";
 
 import styles from "./events.scss";
+import photo_action from "../../../assets/action_photo.png";
 
 // Поиск не сделан
 // При добавлении устройства с несуществующим ключом сделать попап ошибку
@@ -34,9 +22,15 @@ interface IEvent {
 }
 
 export const Events = () => {
-  const { key: keyDevice } = useParams();
+  const { id: keyDevice } = useParams();
   // Поле для поиска
   const [nameDevice, setNameDevice] = React.useState("");
+
+  // Фильтр по типу события
+  const [eventTypeFilter, setEventTypeFilter] = React.useState("");
+  // Фильтр по типу автомобиля
+  const [carTypeFilter, setCarTypeFilter] = React.useState("");
+
   // Все камеры
   const [events, setEvents] = React.useState<IEvent[]>([]);
   // Текущая страница в пагинации
@@ -46,19 +40,53 @@ export const Events = () => {
 
   const navigate = useNavigate();
   const intl = useIntl();
-  const dispatch = useAppDispatch();
 
-  const user = useAppSelector<UserDetails>((state) => state.user);
-  const userEmail = localStorage.getItem("email");
-  const userId = localStorage.getItem("id");
-  const userRoles = localStorage.getItem("roles");
+  const exportScv = () => {
+    const typeOfFiltration =
+      eventTypeFilter === "" && carTypeFilter === ""
+        ? "3"
+        : eventTypeFilter !== "" && carTypeFilter !== ""
+        ? "2"
+        : carTypeFilter !== ""
+        ? "1"
+        : "0";
+
+    let url = `http://localhost:8080/api/event/export?id=${keyDevice}&typeOfFiltration=${typeOfFiltration}`;
+
+    if (carTypeFilter !== "") {
+      url += `&typeOfCar=${carTypeFilter}`;
+    }
+
+    if (eventTypeFilter !== "") {
+      url += `&typeOfEvent=${eventTypeFilter}`;
+    }
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
 
   const fetchEvents = async () => {
     try {
-      // Пользователь имеет доступ только к своим камерам
-      const data = await getEventsDevice(keyDevice!);
-      setEvents(data);
+      // Сменить на idDevice
+      const typeOfFiltration =
+        eventTypeFilter === "" && carTypeFilter === ""
+          ? "3"
+          : eventTypeFilter !== "" && carTypeFilter !== ""
+          ? "2"
+          : carTypeFilter !== ""
+          ? "1"
+          : "0";
+      const data = await getEventsDevice(
+        keyDevice!,
+        typeOfFiltration,
+        carTypeFilter,
+        eventTypeFilter
+      );
       console.log(data);
+      setEvents(
+        data.sort(
+          (a: any, b: any) =>
+            Number(new Date(b.time)) - Number(new Date(a.time))
+        )
+      );
     } catch (error) {
       if (error instanceof AxiosError) {
         console.log(error.response?.data.message);
@@ -71,7 +99,7 @@ export const Events = () => {
   React.useEffect(() => {
     console.log("events get");
     fetchEvents();
-  }, []);
+  }, [carTypeFilter, eventTypeFilter]);
 
   const indexOfLastEvent = currentPage * eventsPerPage;
   const indexOfFirstEvent = indexOfLastEvent - eventsPerPage;
@@ -94,25 +122,57 @@ export const Events = () => {
                   className={styles.input}
                   name="nameDevice"
                   value={nameDevice}
-                  placeholder={intl.formatMessage({ id: "enterNameDevice" })}
+                  placeholder="Номер"
                   onChange={(e) => setNameDevice(e.target.value)}
                 />
                 <button className={styles.button_in_block}>
                   {intl.formatMessage({ id: "searchDevice" })}
                 </button>
+
+                {/* Event Type Filter */}
+                <select
+                  className={styles.select}
+                  value={eventTypeFilter}
+                  onChange={(e) => setEventTypeFilter(e.target.value)}
+                >
+                  <option value="">Все типы событий</option>
+                  <option value="0">Проезд</option>
+                  <option value="1">Превышение скорости</option>
+                  <option value="2">Проезд перед пешеходом</option>
+                </select>
+
+                {/* Car Type Filter */}
+                <select
+                  className={styles.select}
+                  value={carTypeFilter}
+                  onChange={(e) => setCarTypeFilter(e.target.value)}
+                >
+                  <option value="">Все типы машин</option>
+                  <option value="0">Легковая</option>
+                  <option value="1">Грузовая</option>
+                  <option value="2">Спец.транспорт</option>
+                  <option value="3">Автобус</option>
+                </select>
                 <button
                   className={styles.button_in_block}
                   onClick={() =>
-                    navigate(STATISTICS_ROUTE.slice(0, -4) + keyDevice)
+                    navigate(STATISTICS_ROUTE.slice(0, -3) + keyDevice)
                   }
                 >
                   Статистика
+                </button>
+                <button
+                  className={styles.button_in_block}
+                  onClick={() => exportScv()}
+                >
+                  Экспорт
                 </button>
               </div>
             </div>
             <table>
               <thead>
                 <tr className={styles.table_header}>
+                  <th></th> {/* Пустая ячейка для иконки */}
                   <th>Номер машины</th>
                   <th>Скорость (км/ч)</th>
                   <th>Дата</th>
@@ -123,6 +183,10 @@ export const Events = () => {
               <tbody>
                 {currentEvents.map((event) => (
                   <tr key={event.id}>
+                    <td>
+                      <img src={photo_action} className={styles.action_photo} />
+                    </td>
+
                     <td>{event.carId}</td>
                     <td>{event.speed}</td>
                     <td>{event.time}</td>
@@ -148,13 +212,14 @@ export const Events = () => {
             </table>
           </div>
 
-          {
+          <div className={styles.pagination}>
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
               onPageChange={handlePageChange}
             />
-          }
+          </div>
+
           <MenuIcon />
         </div>
       </div>
