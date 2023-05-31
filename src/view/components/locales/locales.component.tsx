@@ -1,10 +1,12 @@
 import React from "react";
+
 import { LOCALES } from "../../../i18n/locales";
+
 import styles from "./locales.scss";
 
 interface LocalesProps {
   setCurrentLocale: Function;
-  currentLocale: String;
+  currentLocale: string;
 }
 
 const Locales = ({ setCurrentLocale, currentLocale }: LocalesProps) => {
@@ -15,6 +17,7 @@ const Locales = ({ setCurrentLocale, currentLocale }: LocalesProps) => {
   return (
     <div className={styles.container}>
       <button
+        aria-label="ru"
         className={
           currentLocale == LOCALES.RUSSIAN ? styles.btn_active : styles.btn
         }
@@ -23,6 +26,7 @@ const Locales = ({ setCurrentLocale, currentLocale }: LocalesProps) => {
         Ru
       </button>
       <button
+        aria-label="eng"
         className={
           currentLocale == LOCALES.ENGLISH ? styles.btn_active : styles.btn
         }

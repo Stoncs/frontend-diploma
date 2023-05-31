@@ -9,6 +9,7 @@ import { Pagination } from "~/view/components/pagination/Pagination.component";
 
 import styles from "./events.scss";
 import photo_action from "../../../assets/action_photo.png";
+import export_png from "../../../assets/export.png";
 
 // Поиск не сделан
 // При добавлении устройства с несуществующим ключом сделать попап ошибку
@@ -115,7 +116,15 @@ export const Events = () => {
       <div className={styles.container}>
         <div className={styles.devices_window}>
           <div className={styles.devices_window__top}>
-            <h1>События устройства {keyDevice}</h1>
+            <div className={styles.header}>
+              <h1>События устройства {keyDevice}</h1>
+              <img
+                src={export_png}
+                className={styles.export_png}
+                onClick={() => exportScv()}
+              />
+            </div>
+
             <div className={styles.devices_window__control}>
               <div className={styles.block_control}>
                 <input
@@ -160,12 +169,6 @@ export const Events = () => {
                   }
                 >
                   Статистика
-                </button>
-                <button
-                  className={styles.button_in_block}
-                  onClick={() => exportScv()}
-                >
-                  Экспорт
                 </button>
               </div>
             </div>

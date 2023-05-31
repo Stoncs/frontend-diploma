@@ -1,0 +1,11 @@
+{
+  "testEnvironment": "jest-environment-jsdom",
+  "setupFilesAfterEnv": ["@testing-library/jest-dom/extend-expect"],
+  "verbose": true,
+  "transform": {
+    "^.+\\.tsx?$": "babel-jest"
+  },
+  "moduleNameMapper": {
+    "\\.(scss)$": "jest-transform-css"
+  }
+}
