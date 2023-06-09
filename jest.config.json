@@ -1,6 +1,12 @@
 {
+  "globals": {
+    "ts-jest": {
+      "tsConfig": "<rootDir>/tsconfig.json"
+    }
+  },
   "testEnvironment": "jest-environment-jsdom",
-  "setupFilesAfterEnv": ["@testing-library/jest-dom/extend-expect"],
+  "setupFilesAfterEnv": ["<rootDir>/src/setupTests.ts"],
+  "setupFiles": ["<rootDir>/src/setupTests.ts"],
   "verbose": true,
   "transform": {
     "^.+\\.tsx?$": "babel-jest"

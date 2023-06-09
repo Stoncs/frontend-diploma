@@ -1,7 +1,13 @@
 import React, { useState } from "react";
-import { act } from "react-dom/test-utils";
+// import { act } from "react-dom/test-utils";
 import "@testing-library/jest-dom";
-import { render, fireEvent, waitFor, screen } from "@testing-library/react";
+import {
+  render,
+  fireEvent,
+  waitFor,
+  screen,
+  act,
+} from "@testing-library/react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import { MemoryRouter } from "react-router-dom";
@@ -136,11 +142,13 @@ describe("SignIn", () => {
 
     await act(async () => {
       fireEvent.click(submitButton);
-
-      await waitFor(() => {
-        expect(logIn).toHaveBeenCalledWith("test@example.com", "wrongpassword");
-      });
     });
+    await waitFor(() => {
+      expect(logIn).toHaveBeenCalledWith("test@example.com", "wrongpassword");
+    });
+    expect(
+      screen.getByText("Неверный логин или пароль, попробуйте заново.")
+    ).toBeInTheDocument();
   });
 
   it("should display error message for server error", async () => {
