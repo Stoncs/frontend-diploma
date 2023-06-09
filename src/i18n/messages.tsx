@@ -96,7 +96,7 @@ const ru_errors = {
   errPhoneMaxLength: "Номер телефона слишком длинный",
   errPhoneIncorrect: "Номер телефона некорректный",
   errPasswordMinLength: "Пароль слишком короткий",
-  errRepeatPassword: "Пароли несовпадают",
+  errRepeatPassword: "Пароли не совпадают",
   errEmailNotFound: "Пользователь с таким email не найден",
   errUnexpected: "Непредвиденная ошибка, попробуйте позже",
 };

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-// import { act } from "react-dom/test-utils";
 import "@testing-library/jest-dom";
 import {
   render,
@@ -11,16 +10,16 @@ import {
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import { MemoryRouter } from "react-router-dom";
-import { IntlProvider, createIntl, useIntl } from "react-intl";
+import { IntlProvider, createIntl } from "react-intl";
 
-import { messages } from "../../../i18n/messages";
-import Locales from "../../components/locales/locales.component";
-import { LOCALES } from "../../../i18n/locales";
+import { messages } from "../i18n/messages";
+import Locales from "../view/components/locales/locales.component";
+import { LOCALES } from "../i18n/locales";
 
-import SignIn from "./sign-in.component";
-import { logIn } from "./../../../http/api";
+import SignIn from "../view/pages/sign-in/sign-in.component";
+import { logIn } from "../http/api";
 
-jest.mock("./../../../http/api");
+jest.mock("../http/api");
 
 const mockStore = configureStore([]);
 const store = mockStore({});
@@ -35,13 +34,8 @@ const useStateMock = (initialState) => {
 };
 
 const CustomIntlProvider = ({ locale, messages, children }) => {
-  const intl = createIntl({
-    locale,
-    messages,
-  });
-
   return (
-    <IntlProvider locale={locale} messages={messages} value={intl}>
+    <IntlProvider locale={locale} messages={messages}>
       {children}
     </IntlProvider>
   );
@@ -63,13 +57,6 @@ describe("SignIn", () => {
       phoneNumber: "123456789",
       roles: ["user"],
     });
-  });
-
-  afterEach(() => {
-    logIn.mockClear();
-  });
-
-  it("should log in successfully", async () => {
     render(
       <Provider store={store}>
         <CustomIntlProvider
@@ -86,7 +73,13 @@ describe("SignIn", () => {
         </CustomIntlProvider>
       </Provider>
     );
+  });
 
+  afterEach(() => {
+    logIn.mockClear();
+  });
+
+  it("should log in successfully", async () => {
     const emailInput = screen.getByRole("textbox", { name: "email" });
     const passwordInput = screen.getByLabelText("password");
     const submitButton = screen.getByRole("button", { name: "signIn" });
@@ -116,23 +109,6 @@ describe("SignIn", () => {
       return Promise.resolve({});
     });
 
-    render(
-      <Provider store={store}>
-        <CustomIntlProvider
-          locale={currentLocale}
-          messages={messages[currentLocale]}
-        >
-          <Locales
-            setCurrentLocale={setCurrentLocale}
-            currentLocale={currentLocale}
-          />
-          <MemoryRouter>
-            <SignIn />
-          </MemoryRouter>
-        </CustomIntlProvider>
-      </Provider>
-    );
-
     const emailInput = screen.getByRole("textbox", { name: "email" });
     const passwordInput = screen.getByLabelText("password");
     const submitButton = screen.getByRole("button", { name: "signIn" });
@@ -151,56 +127,7 @@ describe("SignIn", () => {
     ).toBeInTheDocument();
   });
 
-  it("should display error message for server error", async () => {
-    render(
-      <Provider store={store}>
-        <CustomIntlProvider
-          locale={currentLocale}
-          messages={messages[currentLocale]}
-        >
-          <Locales
-            setCurrentLocale={setCurrentLocale}
-            currentLocale={currentLocale}
-          />
-          <MemoryRouter>
-            <SignIn />
-          </MemoryRouter>
-        </CustomIntlProvider>
-      </Provider>
-    );
-
-    const emailInput = screen.getByRole("textbox", { name: "email" });
-    const passwordInput = screen.getByLabelText("password");
-    const submitButton = screen.getByRole("button", { name: "signIn" });
-
-    fireEvent.change(emailInput, { target: { value: "test@example.com" } });
-    fireEvent.change(passwordInput, { target: { value: "password123" } });
-
-    fireEvent.click(submitButton);
-
-    await waitFor(() =>
-      expect(logIn).toHaveBeenCalledWith("test@example.com", "password123")
-    );
-  });
-
   it("should change text when language/locale is switched", async () => {
-    render(
-      <Provider store={store}>
-        <CustomIntlProvider
-          locale={currentLocale}
-          messages={messages[currentLocale]}
-        >
-          <Locales
-            setCurrentLocale={setCurrentLocale}
-            currentLocale={currentLocale}
-          />
-          <MemoryRouter>
-            <SignIn />
-          </MemoryRouter>
-        </CustomIntlProvider>
-      </Provider>
-    );
-
     const languageSwitchButton = screen.getByRole("button", { name: "eng" });
 
     // Switch language

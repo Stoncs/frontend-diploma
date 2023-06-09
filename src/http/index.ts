@@ -1,13 +1,4 @@
 import axios from "axios";
-
-const localStorageMock = {
-  getItem: jest.fn(),
-};
-
-Object.defineProperty(window, "localStorage", {
-  value: localStorageMock,
-});
-
 // Неавторизованные запросы
 const $host = axios.create({
   baseURL: "http://localhost:8080/",

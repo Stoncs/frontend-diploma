@@ -2,14 +2,15 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { FormattedMessage, useIntl } from "react-intl";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-// ДОПИСАТЬ ВАЛИДАЦИЮ НОРМАЛЬНО
-import styles from "./sign-up.style.scss";
 
-import { LOGIN_ROUTE } from "~/utils/consts";
-import InputRegister from "~/view/components/inputRegister/inputRegister.component";
+import { LOGIN_ROUTE } from "../../../utils/consts";
+import InputRegister from "../../components/inputRegister/inputRegister.component";
+import { registerUser } from "../../../http/api";
+
+import styles from "./sign-up.style.scss";
 
 type IFormInputs = {
   email: string;
@@ -72,20 +73,19 @@ export default function SingUp() {
   // Метод для отправки формы
   const onSubmit: SubmitHandler<IFormInputs> = async (data) => {
     try {
-      await axios.post<IFormInputs>("http://localhost:8080/api/auth/signup", {
-        username: data.email,
-        phoneNumber: data.phone,
-        fullname: data.fullName,
-        password: data.password,
-        organisation: data.organisation,
-      });
+      await registerUser(
+        data.email,
+        data.phone,
+        data.fullName,
+        data.password,
+        data.organisation
+      );
       navigate(LOGIN_ROUTE);
     } catch (error) {
       if (error instanceof AxiosError) {
         // eslint-disable-next-line no-console
         alert(error);
         console.log(error.response?.data.message);
-        // ... дописать, что проверку не прошло
       } else {
         console.log("Unexpected error", error);
       }
@@ -99,7 +99,7 @@ export default function SingUp() {
           <h1>
             <FormattedMessage id="registration" />
           </h1>
-
+          <label htmlFor="email">email</label>
           <InputRegister
             id="email"
             type="email"
@@ -108,7 +108,7 @@ export default function SingUp() {
             errorMessageId={errors.email?.message}
             required={true}
           />
-
+          <label htmlFor="phone">phone</label>
           <InputRegister
             id="phone"
             type="text"
@@ -116,7 +116,7 @@ export default function SingUp() {
             register={{ ...register("phone") }}
             errorMessageId={errors.phone?.message}
           />
-
+          <label htmlFor="fullName">fullName</label>
           <InputRegister
             id="fullName"
             type="text"
@@ -124,7 +124,7 @@ export default function SingUp() {
             register={{ ...register("fullName") }}
             errorMessageId={errors.fullName?.message}
           />
-
+          <label htmlFor="organisation">organisation</label>
           <InputRegister
             id="organisation"
             type="text"
@@ -132,7 +132,7 @@ export default function SingUp() {
             register={{ ...register("organisation") }}
             errorMessageId={errors.organisation?.message}
           />
-
+          <label htmlFor="password">password</label>
           <InputRegister
             id="password"
             type="password"
@@ -141,7 +141,7 @@ export default function SingUp() {
             errorMessageId={errors.password?.message}
             required={true}
           />
-
+          <label htmlFor="repeatPassword">repeatPassword</label>
           <InputRegister
             id="repeatPassword"
             type="password"

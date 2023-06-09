@@ -1,5 +1,7 @@
 import "jest-localstorage-mock";
+import React from "react";
 
+global.React = React; // this also works for other globally available libraries
 global.IS_REACT_ACT_ENVIRONMENT = true;
 const localStorageMock = (function () {
   let store = {};

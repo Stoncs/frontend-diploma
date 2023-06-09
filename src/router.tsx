@@ -1,4 +1,5 @@
 import { Route, Routes } from "react-router";
+
 import { useAppSelector } from "./redux/hooks";
 import { MenuDetails, PopupDetails } from "./redux/types";
 import {
@@ -12,10 +13,7 @@ import {
   STATISTICS_ROUTE,
 } from "./utils/consts";
 import MessagePopup from "./view/components/messagePopup/MessagePopup.component";
-
-import { DeviceSettings } from "./view/pages/device-settings/device-settings.component";
 import { Devices } from "./view/pages/devices/devices.component";
-
 import { PasswordChange } from "./view/pages/password-change/password-change.component";
 import { PasswordRecovery } from "./view/pages/password-recovery/password-recovery";
 import { Profile } from "./view/pages/profile/profile.component";
@@ -39,7 +37,6 @@ export const Router = () => {
         <Route path={CHANGE_PASSWORD_ROUTE} element={<PasswordChange />} />
         <Route path={PROFILE_ROUTE} element={<Profile />} />
         <Route path={DEVICES_ROUTE} element={<Devices />} />
-        <Route path={DEVICE_SETTINGS_ROUTE} element={<DeviceSettings />} />
         <Route path={EVENTS_ROUTE} element={<Events />} />
         <Route path={STATISTICS_ROUTE} element={<Statistics />} />
       </Routes>
