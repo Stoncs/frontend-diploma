@@ -441,10 +441,11 @@ export const Statistics = () => {
         </div>
         <div className={styles.content}>
           <div className={styles.content__charts}>
+            <label data-testid="barEventTypeChart">Типы события</label>
             <Bar data={dataBarEventType} options={options1} />
-
+            <label data-testid="barCarTypeChart">Типы событий</label>
             <Bar data={dataBarCarType} options={options2} />
-
+            <label data-testid="lineAverageSpeedChart">Скорость</label>
             <Line data={dataLineAverageSpeed} options={options3} />
           </div>
           <div className={styles.content__text}>

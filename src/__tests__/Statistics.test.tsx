@@ -1,5 +1,6 @@
 import React from "react";
 import "@testing-library/jest-dom";
+import "jest-canvas-mock";
 import {
   render,
   fireEvent,
@@ -281,7 +282,7 @@ describe("Events", () => {
     expect(screen.getByText("Статистика")).toBeInTheDocument();
   });
 
-  it("should handle error and navigate to login page", async () => {
+  it("displays transport information", async () => {
     expect(screen.getByText(/Всего транспорта/)).toBeInTheDocument();
     expect(screen.getByText(/Количество легковых/)).toBeInTheDocument();
     expect(screen.getByText(/Средняя скорость легковых/)).toBeInTheDocument();
@@ -291,5 +292,11 @@ describe("Events", () => {
     expect(
       screen.getByText(/Средняя скорость спец. транспорта/)
     ).toBeInTheDocument();
+  });
+  it("renders charts", () => {
+    // Проверяем, что графики отображены
+    expect(screen.getByTestId("barEventTypeChart")).toBeInTheDocument();
+    expect(screen.getByTestId("barCarTypeChart")).toBeInTheDocument();
+    expect(screen.getByTestId("lineAverageSpeedChart")).toBeInTheDocument();
   });
 });

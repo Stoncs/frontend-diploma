@@ -5,7 +5,7 @@
     }
   },
   "testEnvironment": "jest-environment-jsdom",
-  "setupFilesAfterEnv": ["<rootDir>/src/setupTests.ts"],
+  "setupFilesAfterEnv": ["<rootDir>/src/setupTests.ts", "jest-canvas-mock"],
   "setupFiles": ["<rootDir>/src/setupTests.ts"],
   "verbose": true,
   "transform": {

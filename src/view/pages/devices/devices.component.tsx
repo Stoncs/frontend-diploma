@@ -48,14 +48,13 @@ export const Devices = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
-  const user = useAppSelector<UserDetails>((state) => state.user);
   const userEmail = localStorage.getItem("email");
   const userId = localStorage.getItem("id");
   const userRoles = localStorage.getItem("roles");
 
   const fetchDevices = async () => {
     try {
-      if (user.roles.includes("ROLE_ADMIN")) {
+      if (userRoles!.includes("ROLE_ADMIN")) {
         // Админ имеет доступ ко всем камерам
         const data = await getDevicesAll(userEmail!);
         setDevices(data);
@@ -141,7 +140,9 @@ export const Devices = () => {
                 </div>
               ) : (
                 <div className={styles.block_control}>
+                  <label htmlFor="key">key</label>
                   <input
+                    id="key"
                     className={styles.input}
                     name="key"
                     value={keyDevice}
