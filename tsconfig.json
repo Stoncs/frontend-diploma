@@ -33,6 +33,6 @@
       "~/*": ["src/*"]
     }
   },
-  "include": ["**/*.ts", "**/*.tsx", "babel.config.оы", "src/setupTests.ts"],
+  "include": ["**/*.ts", "**/*.tsx", "./babel.config.js", "src/setupTests.ts"],
   "exclude": ["node_modules", "build"]
 }

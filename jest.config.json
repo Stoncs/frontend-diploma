@@ -9,9 +9,10 @@
   "setupFiles": ["<rootDir>/src/setupTests.ts"],
   "verbose": true,
   "transform": {
-    "^.+\\.tsx?$": "babel-jest"
+    "^.+\\.tsx?$": "babel-jest",
+    "\\.(css|less|sass|scss)$": "jest-css-modules-transform"
   },
   "moduleNameMapper": {
-    "\\.(scss)$": "jest-transform-css"
+    "\\.(scss)$": "identity-obj-proxy"
   }
 }
