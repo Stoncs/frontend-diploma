@@ -1,54 +1,60 @@
 import React from "react";
+import { useNavigate } from "react-router";
+
+import { useAppDispatch } from "../../../redux/hooks";
+import { MenuIcon } from "../../../view/components/menuIcon/MenuIcon.component";
+import { LOGIN_ROUTE } from "../../../utils/consts";
+import { setPopup } from "../../../redux/actions/popup";
+
+import profile_icon from "./../../../assets/profile_icon.png";
+import styles from "./profile.scss";
+
 import { changeProfile, getUserProfile, sendEmail } from "~/http/api";
-import { setUser } from "~/redux/actions/user";
-import { useAppDispatch } from "~/redux/hooks";
 
 type ProfileFieldProps = {
   name: string;
-  title: string;
-  initialValue: string;
   email: string;
+  placeholder: string;
+  pattern?: string;
 };
 
 // Компонент ProfileField
 const ProfileField = ({
   name,
-  title,
-  initialValue,
   email,
+  placeholder,
+  pattern,
 }: ProfileFieldProps) => {
-  const [available, setAvailable] = React.useState(false);
-  const [value, setValue] = React.useState(initialValue);
-
-  const fetchUserProfileInfo = async () => {
-    try {
-      const data = getUserProfile(email);
-      return data;
-    } catch (e) {
-      alert(e);
-    }
-  };
-  React.useEffect(() => {
-    fetchUserProfileInfo().then((data) => {
-      console.log(data);
-    });
-  }, []);
+  const [value, setValue] = React.useState("");
 
   return (
-    <div>
-      <p>{title}</p>
-      {available ? (
-        <input
-          value={value!}
-          onChange={(e) => {
-            if (e.target) setValue(e.target.value);
-          }}
-        />
-      ) : (
-        <input value={value!} disabled />
-      )}
-      {available ? (
+    <div className={styles.profile_field}>
+      <form>
+        {pattern ? (
+          <input
+            placeholder={placeholder}
+            pattern={pattern}
+            value={value}
+            onChange={(e) => {
+              if (e.target) {
+                setValue(e.target.value);
+              }
+            }}
+          />
+        ) : (
+          <input
+            placeholder={placeholder}
+            value={value}
+            onChange={(e) => {
+              if (e.target) {
+                setValue(e.target.value);
+              }
+            }}
+          />
+        )}
+
         <button
+          type="submit"
           onClick={async () => {
             try {
               const data = await changeProfile(name, value, email);
@@ -56,54 +62,111 @@ const ProfileField = ({
             } catch (error) {
               alert(error);
             }
-
-            setAvailable(!available);
           }}
         >
           Сохранить
         </button>
-      ) : (
-        <button onClick={() => setAvailable(!available)}>Изменить</button>
-      )}
+      </form>
     </div>
   );
 };
 
+type ProfileInfo = {
+  fullname: string | null;
+  organisation: string | null;
+  phoneNumber: string;
+  username: string;
+};
+
 export const Profile = () => {
   const email = localStorage.getItem("email");
-  const fullname = localStorage.getItem("fullname");
-  const organisation = localStorage.getItem("organisation");
-  const phoneNumber = localStorage.getItem("phoneNumber");
+
+  const [profileInfo, setProfileInfo] = React.useState<ProfileInfo>();
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+  const fetchUserProfileInfo = async () => {
+    try {
+      const data = await getUserProfile(email!);
+      setProfileInfo(data);
+      return data;
+    } catch (e) {
+      alert(e);
+      navigate(LOGIN_ROUTE);
+    }
+  };
+  React.useEffect(() => {
+    fetchUserProfileInfo();
+  }, []);
 
   const onClickResetPassword = () => {
-    sendEmail(email!);
+    try {
+      sendEmail(email!);
+      dispatch(
+        setPopup({
+          header: "Успешно!",
+          message: "Вам на почту отправлено письмо для смены пароля",
+          type: "normal",
+        })
+      );
+    } catch {
+      dispatch(
+        setPopup({
+          header: "Ошибка!",
+          message: "Не получилось отправить письмо на почту",
+          type: "error",
+        })
+      );
+    }
+  };
+
+  const logout = () => {
+    localStorage.removeItem("token");
+    navigate(LOGIN_ROUTE);
   };
 
   return (
-    <div>
-      <h1>Профиль</h1>
-      <p>Почта</p>
-      <p>{email}</p>
-      <ProfileField
-        name="fullname"
-        title="Полное имя"
-        initialValue={fullname!}
-        email={email!}
-      />
-      <ProfileField
-        name="organisation"
-        title="Организация"
-        initialValue={organisation!}
-        email={email!}
-      />
-      <ProfileField
-        name="phoneNumber"
-        title="Номер телефона"
-        initialValue={phoneNumber!}
-        email={email!}
-      />
-      <p />
-      <button onClick={onClickResetPassword}>Поменять пароль</button>
+    <div className={styles.container}>
+      <div className={styles.profile}>
+        <h1>Профиль</h1>
+        <div className={styles.profile__header}>
+          <div className={styles.profile__icon}>
+            <img src={profile_icon} />
+          </div>
+          <div className={styles.profile__info}>
+            {profileInfo?.fullname ? <p>{profileInfo.fullname}</p> : ""}
+            {profileInfo?.username ? <p>{profileInfo.username}</p> : ""}
+            {profileInfo?.organisation ? <p>{profileInfo.organisation}</p> : ""}
+            {profileInfo?.phoneNumber ? <p>{profileInfo.phoneNumber}</p> : ""}
+          </div>
+        </div>
+        <div className={styles.profile__inputs}>
+          <h2>Настройки профиля:</h2>
+          <ProfileField
+            placeholder="Полное имя"
+            name="fullname"
+            email={email!}
+          />
+          <ProfileField
+            name="organisation"
+            placeholder="Организация"
+            email={email!}
+          />
+          <ProfileField
+            name="phoneNumber"
+            placeholder="Номер телефона"
+            email={email!}
+            pattern="^(8|\+7)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}"
+          />
+        </div>
+
+        <div className={styles.profile__buttons}>
+          <button onClick={onClickResetPassword}>Поменять пароль</button>
+          <button onClick={logout}>Выйти</button>
+        </div>
+
+        <MenuIcon />
+      </div>
     </div>
   );
 };

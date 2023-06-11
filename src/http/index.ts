@@ -1,5 +1,4 @@
 import axios from "axios";
-
 // Неавторизованные запросы
 const $host = axios.create({
   baseURL: "http://localhost:8080/",
@@ -16,6 +15,7 @@ const authInterceptor = (config: any) => {
   return config;
 };
 
+// В авторизованных запросах в заголовке jwt токен
 $authHost.interceptors.request.use(authInterceptor);
 
 export { $host, $authHost };

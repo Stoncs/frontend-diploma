@@ -1,7 +1,8 @@
 @import "../../../scss/colors.scss";
 @import "../../../scss/fonts.scss";
+@import "../../../scss/mixins.scss";
 
-.input {
+.input_register {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -23,27 +24,13 @@
   }
 
   .input {
-    all: unset;
-    position: relative;
-    z-index: 3;
-    display: block;
+    @include input;
     width: 70%;
     min-width: 50px;
-    padding: 10px 16px;
-    font-size: 14px;
-    background: $clr-background-input;
-    box-shadow: 0px 4px 9px rgba(48, 79, 159, 0.25),
-      inset 2px 5px 8px rgba(0, 0, 0, 0.25);
-    border: 1px solid transparent;
-    border-radius: 10px;
-    color: black;
+    z-index: 3;
 
     &__error {
       border: 1px solid $clr-input-error-border;
-    }
-    &::placeholder {
-      font-weight: $font-weight-500;
-      font-size: 0.9em;
     }
   }
 

@@ -17,9 +17,6 @@
   &::after {
     @include window-add-effect;
   }
-  label {
-    display: none;
-  }
 }
 
 .devices_window {
@@ -41,11 +38,11 @@
   h1 {
     display: block;
     font-size: 22px;
-    margin-bottom: 10%;
     font-family: $montserrat-font-family;
     font-weight: $font-weight-700;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
     text-align: center;
+    margin-top: -25px;
   }
 
   &__control {
@@ -74,7 +71,7 @@
 
 .input {
   @include input;
-  width: 50%;
+  width: 600px;
   height: 15px;
 }
 
@@ -102,10 +99,32 @@ td {
   }
 }
 
-.first {
-  width: 30%;
+.action_photo {
+  display: block;
+  width: 25px;
+  cursor: pointer;
 }
 
-.second {
-  width: 70%;
+.pagination {
+  margin-bottom: -20px;
+}
+
+.select {
+  height: 40px;
+  margin-left: 40px;
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+}
+
+.export_png {
+  display: block;
+  cursor: pointer;
+  opacity: 80%;
+  width: 30px;
+  height: 30px;
+  margin-left: 10px;
+  margin-top: -25px;
 }

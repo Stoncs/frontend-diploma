@@ -1,14 +1,14 @@
 import { AxiosError } from "axios";
 import jwt_decode from "jwt-decode";
+
 import { $authHost, $host } from ".";
 
 // Авторизация
-export const logIn = async (email: String, password: String) => {
+export const logIn = async (email: string, password: string) => {
   const { data } = await $host.post("/api/auth/signin", {
     username: email,
     password,
   });
-  console.log(data);
 
   localStorage.setItem("token", data.token);
   localStorage.setItem("id", data.id);
@@ -16,12 +16,29 @@ export const logIn = async (email: String, password: String) => {
   localStorage.setItem("fullname", data.fullname);
   localStorage.setItem("organisation", data.organisation);
   localStorage.setItem("phoneNumber", data.phoneNumber);
+  localStorage.setItem("roles", data.roles);
 
   return data;
 };
 
+export const registerUser = async (
+  username: string,
+  phoneNumber: string,
+  fullname: string,
+  password: string,
+  organisation: string
+) => {
+  const { data } = await $host.post("/api/auth/signup", {
+    username,
+    phoneNumber,
+    fullname,
+    password,
+    organisation,
+  });
+  return data;
+};
 // Отправление письма на почту
-export const sendEmail = async (email: String) => {
+export const sendEmail = async (email: string) => {
   const { data } = await $host.post("/api/password/forgot", {
     username: email,
   });
@@ -29,7 +46,7 @@ export const sendEmail = async (email: String) => {
 };
 
 // Изменение пароля
-export const changePassword = async (newPassword: String, token: String) => {
+export const changePassword = async (newPassword: string, token: string) => {
   const { data } = await $host.post("/api/password/reset", {
     newPassword,
     token,
@@ -39,9 +56,9 @@ export const changePassword = async (newPassword: String, token: String) => {
 
 // Изменение информации в профиле
 export const changeProfile = async (
-  type: String,
-  value: String,
-  email: String
+  type: string,
+  value: string,
+  email: string
 ) => {
   const { data } = await $authHost.post(
     "/api/profile/changeprofile",
@@ -58,7 +75,7 @@ export const changeProfile = async (
 };
 
 // Добавление пользователю нового устройства
-export const addNewDevice = async (id: String, key: String) => {
+export const addNewDevice = async (id: string, key: string) => {
   const { data } = await $authHost.post("/api/device/link", {
     id,
     key,
@@ -67,13 +84,13 @@ export const addNewDevice = async (id: String, key: String) => {
 };
 
 // Получение списка устройств для пользователя
-export const getDevicesForUser = async (id: Number) => {
+export const getDevicesForUser = async (id: number) => {
   const { data } = await $authHost.get("/api/device/show", { params: { id } });
   return data;
 };
 
 // Получение списка устройств для админа
-export const getDevicesAll = async (email: String) => {
+export const getDevicesAll = async (email: string) => {
   const { data } = await $authHost.get("/api/device/show_all", {
     params: { username: email },
   });
@@ -81,7 +98,7 @@ export const getDevicesAll = async (email: String) => {
 };
 
 // Получение параметров устройства
-export const getDeviceParameters = async (id: String, email: String) => {
+export const getDeviceParameters = async (id: string, email: string) => {
   const { data } = await $authHost.get("/api/device/show_parameters", {
     params: { id, username: email },
   });
@@ -91,9 +108,9 @@ export const getDeviceParameters = async (id: String, email: String) => {
 
 // Изменение настроек камеры
 export const changeDeviceParameters = async (
-  type: String,
-  value: String,
-  id: String
+  type: string,
+  value: string,
+  id: string
 ) => {
   const { data } = await $authHost.post("/api/device/change_parameters", {
     type,
@@ -105,11 +122,53 @@ export const changeDeviceParameters = async (
 
 // Получение информации о профиле
 export const getUserProfile = async (email: string) => {
+  const { data } = await $authHost.get("/api/profile/getinfo", {
+    params: { username: email },
+  });
+  return data;
+};
+
+export const registerDevice = async (key: string, name: string) => {
+  const { data } = await $authHost.post("/api/device/register_device", null, {
+    params: { key, name },
+  });
+  return data;
+};
+
+// Получение списка устройств для админа
+export const getEventsDevice = async (
+  id: string,
+  typeOfFiltration: string,
+  typeOfCar: string,
+  typeOfEvent: string
+) => {
   try {
-    const { data } = await $authHost.get("/api/profile/getinfo", {
-      params: { username: email },
-    });
-    return data;
+    switch (typeOfFiltration) {
+      case "3": {
+        const { data } = await $authHost.get("/api/event/show_events", {
+          params: { id, typeOfFiltration },
+        });
+        return data;
+      }
+      case "2": {
+        const { data } = await $authHost.get("/api/event/show_events", {
+          params: { id, typeOfFiltration, typeOfCar, typeOfEvent },
+        });
+        return data;
+      }
+      case "1": {
+        const { data } = await $authHost.get("/api/event/show_events", {
+          params: { id, typeOfFiltration, typeOfCar },
+        });
+        return data;
+      }
+      default: {
+        const { data } = await $authHost.get("/api/event/show_events", {
+          params: { id, typeOfFiltration, typeOfEvent },
+        });
+        return data;
+      }
+    }
   } catch (error) {
     if (error instanceof AxiosError) {
       // eslint-disable-next-line no-console
@@ -120,4 +179,103 @@ export const getUserProfile = async (email: string) => {
       console.log("Unexpected error", error);
     }
   }
+};
+
+export const getAverageSpeedPerHour = async (
+  year: number,
+  month: number,
+  day: number,
+  id: number
+) => {
+  const { data } = await $authHost.get("/api/event/average_speed", {
+    params: { year, month, day, id },
+  });
+  return data;
+};
+
+export const getTypeOfCarPerHour = async (
+  year: number,
+  month: number,
+  day: number,
+  id: number
+) => {
+  const { data } = await $authHost.get("/api/event/type_of_car", {
+    params: { year, month, day, id },
+  });
+  return data;
+};
+
+export const getTypeOfEventPerHour = async (
+  year: number,
+  month: number,
+  day: number,
+  id: number
+) => {
+  const { data } = await $authHost.get("/api/event/type_of_event", {
+    params: { year, month, day, id },
+  });
+  return data;
+};
+
+export const getAverageSpeedPerDay = async (
+  yearFrom: number,
+  monthFrom: number,
+  dayFrom: number,
+  yearTo: number,
+  monthTo: number,
+  dayTo: number,
+  id: number
+) => {
+  const { data } = await $authHost.get("/api/event/average_speed_per_day", {
+    params: { yearFrom, monthFrom, dayFrom, yearTo, monthTo, dayTo, id },
+  });
+  return data;
+};
+
+export const getTypeOfCarPerDay = async (
+  yearFrom: number,
+  monthFrom: number,
+  dayFrom: number,
+  yearTo: number,
+  monthTo: number,
+  dayTo: number,
+  id: number
+) => {
+  const { data } = await $authHost.get("/api/event/type_of_car_per_day", {
+    params: { yearFrom, monthFrom, dayFrom, yearTo, monthTo, dayTo, id },
+  });
+  return data;
+};
+
+export const getTypeOfEventPerDay = async (
+  yearFrom: number,
+  monthFrom: number,
+  dayFrom: number,
+  yearTo: number,
+  monthTo: number,
+  dayTo: number,
+  id: number
+) => {
+  const { data } = await $authHost.get("/api/event/type_of_event_per_day", {
+    params: { yearFrom, monthFrom, dayFrom, yearTo, monthTo, dayTo, id },
+  });
+  return data;
+};
+
+export const getAverageSpeedByTypeCar = async (
+  yearFrom: number,
+  monthFrom: number,
+  dayFrom: number,
+  yearTo: number,
+  monthTo: number,
+  dayTo: number,
+  id: number
+) => {
+  const { data } = await $authHost.get(
+    "/api/event/average_speed_by_type_of_car",
+    {
+      params: { yearFrom, monthFrom, dayFrom, yearTo, monthTo, dayTo, id },
+    }
+  );
+  return data;
 };

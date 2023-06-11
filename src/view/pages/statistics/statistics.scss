@@ -9,7 +9,7 @@
   min-height: 320px;
   max-height: 700px;
 
-  height: 100vw;
+  height: 100vh;
   min-width: 320px;
   max-width: 1200px;
   width: 75vw;
@@ -17,12 +17,9 @@
   &::after {
     @include window-add-effect;
   }
-  label {
-    display: none;
-  }
 }
 
-.devices_window {
+.statistics_window {
   z-index: 3;
   position: relative;
   height: 100%;
@@ -41,25 +38,39 @@
   h1 {
     display: block;
     font-size: 22px;
-    margin-bottom: 10%;
+    margin-top: 50px;
     font-family: $montserrat-font-family;
     font-weight: $font-weight-700;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
     text-align: center;
   }
 
+  button {
+    @include button;
+    @include button--blue;
+  }
+
+  input,
+  select {
+    height: 80%;
+  }
+
+  label {
+    display: none;
+  }
   &__control {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
 
     .block_control {
-      width: 50%;
+      width: 60%;
       display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
     }
   }
   .button_in_block {
-    margin-bottom: 20px;
-    margin-left: 10%;
+    // margin-bottom: 20px;
   }
   .button_admin {
     align-self: flex-start;
@@ -67,45 +78,39 @@
   }
 
   &__top {
-    height: 60%;
+    display: flex;
+    flex-direction: column;
     width: 90%;
   }
 }
 
-.input {
-  @include input;
-  width: 50%;
-  height: 15px;
-}
-
-table {
-  border-collapse: collapse;
+// Define the styles for the container element
+.content {
+  display: flex;
+  justify-content: space-evenly;
+  // align-items: center;
   width: 100%;
-  border: 1px solid #828282;
-}
-
-th,
-td {
-  padding: 8px;
-  text-align: left;
-  border-bottom: 1px solid #828282;
-  border-right: 1px solid #828282;
-  color: #000;
-  background-color: #f2f2f2;
-}
-
-.table_header {
-  th {
-    background-color: $clr-blue-header-table;
-    text-align: center;
-    color: white;
+  &__charts {
+    background-color: white;
+    width: 50%;
+    height: 500px;
+    overflow: scroll;
+    overflow-x: unset;
+    margin-bottom: 100px;
+    canvas {
+      width: 100% !important;
+      height: 60% !important;
+    }
   }
-}
-
-.first {
-  width: 30%;
-}
-
-.second {
-  width: 70%;
+  &__text {
+    padding: 10px 10px;
+    width: 40%;
+    height: 85%;
+    background-color: rgba(255, 255, 255, 50%);
+    color: black;
+    border-radius: 20px;
+    p {
+      margin-bottom: 5px;
+    }
+  }
 }

@@ -1,0 +1,18 @@
+{
+  "globals": {
+    "ts-jest": {
+      "tsConfig": "<rootDir>/tsconfig.json"
+    }
+  },
+  "testEnvironment": "jest-environment-jsdom",
+  "setupFilesAfterEnv": ["<rootDir>/src/setupTests.ts", "jest-canvas-mock"],
+  "setupFiles": ["<rootDir>/src/setupTests.ts"],
+  "verbose": true,
+  "transform": {
+    "^.+\\.tsx?$": "babel-jest",
+    "\\.(css|less|sass|scss)$": "jest-css-modules-transform"
+  },
+  "moduleNameMapper": {
+    "\\.(scss)$": "identity-obj-proxy"
+  }
+}

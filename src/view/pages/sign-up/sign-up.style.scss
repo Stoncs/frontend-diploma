@@ -17,6 +17,9 @@
   &::after {
     @include window-add-effect;
   }
+  label {
+    display: none;
+  }
 }
 
 .sign_form {

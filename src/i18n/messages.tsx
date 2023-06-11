@@ -25,7 +25,7 @@ const ru_signInUp = {
   organisation: "Организация",
   password: "Пароль",
   repeatPassword: "Повторите пароль",
-  signInLabel: "Регистрация",
+  signInLabel: "Войти в систему",
   authorization: "Авторизация",
   signIn: "Войти",
   signUp: "Зарегистрироваться",
@@ -49,22 +49,35 @@ const ru_recoveryPassword = {
 };
 
 const eng_devicesPage = {
+  devicesPageHeader: "Available devices",
+  enterKeyDevice: "Camera key",
+  enterNameDevice: "Name device",
+  addNewDevice: "Add",
+  searchDevice: "Search",
   nameDevice: "Name",
   modeDevice: "Mode",
   signalDevice: "Signal",
   viewDevice: "View",
+  address: "Address",
 };
 
 const ru_devicesPage = {
+  devicesPageHeader: "Доступные устройства",
+  enterKeyDevice: "Ключ камеры",
+  enterNameDevice: "Название",
+  addNewDevice: "Добавить",
+  searchDevice: "Поиск",
   nameDevice: "Название",
   modeDevice: "Режим работы",
   signalDevice: "Сигнал",
   viewDevice: "Вид",
+  address: "Адрес",
 };
 
 // Текст ошибок
 const eng_errors = {
   error: "Error!",
+  errKeyNotFound: "Device with this key not found",
   errFieldRequired: "This field must not be empty",
   errEmailIncorrect: "Email is incorrect",
   errPhoneMaxLength: "Phone number too long",
@@ -77,12 +90,13 @@ const eng_errors = {
 
 const ru_errors = {
   error: "Ошибка!",
+  errKeyNotFound: "Устройство с таким ключом не найдено",
   errFieldRequired: "Поле не должно быть пустым",
   errEmailIncorrect: "Почта некорректная",
   errPhoneMaxLength: "Номер телефона слишком длинный",
   errPhoneIncorrect: "Номер телефона некорректный",
   errPasswordMinLength: "Пароль слишком короткий",
-  errRepeatPassword: "Пароли несовпадают",
+  errRepeatPassword: "Пароли не совпадают",
   errEmailNotFound: "Пользователь с таким email не найден",
   errUnexpected: "Непредвиденная ошибка, попробуйте позже",
 };
