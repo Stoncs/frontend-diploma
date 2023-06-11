@@ -2,10 +2,11 @@ import { AxiosError } from "axios";
 import React, { FormEvent } from "react";
 import { useIntl } from "react-intl";
 import { useNavigate } from "react-router";
-import { sendEmail } from "~/http/api";
-import { setPopup } from "~/redux/actions/popup";
-import { useAppDispatch } from "~/redux/hooks";
-import { LOGIN_ROUTE } from "~/utils/consts";
+
+import { sendEmail } from "../../../http/api";
+import { setPopup } from "../../../redux/actions/popup";
+import { useAppDispatch } from "../../../redux/hooks";
+import { LOGIN_ROUTE } from "../../../utils/consts";
 
 import styles from "./password-recovery.scss";
 

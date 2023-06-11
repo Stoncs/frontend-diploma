@@ -1,6 +1,6 @@
 import React, { FormEvent } from "react";
 import { useParams } from "react-router";
-import { changePassword } from "~/http/api";
+import { changePassword } from "../../../http/api";
 
 export const PasswordChange = () => {
   const [newPassword, setNewPassword] = React.useState("");

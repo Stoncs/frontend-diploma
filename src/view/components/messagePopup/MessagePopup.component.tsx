@@ -1,9 +1,10 @@
 import classNames from "classnames";
 import React from "react";
 import { useNavigate } from "react-router";
-import { unsetPopup } from "~/redux/actions/popup";
-import { useAppDispatch } from "~/redux/hooks";
-import { PopupDetails } from "~/redux/types";
+
+import { unsetPopup } from "../../../redux/actions/popup";
+import { useAppDispatch } from "../../../redux/hooks";
+import { PopupDetails } from "../../../redux/types";
 
 import styles from "./messagePopup.scss";
 

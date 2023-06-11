@@ -2,14 +2,19 @@ import { AxiosError } from "axios";
 import React from "react";
 import { useIntl } from "react-intl";
 import { Link, useNavigate } from "react-router-dom";
-import { getDevicesForUser, addNewDevice, getDevicesAll } from "~/http/api";
-import { setPopup } from "~/redux/actions/popup";
-import { useAppDispatch, useAppSelector } from "~/redux/hooks";
-import { UserDetails } from "~/redux/types";
-import { EVENTS_ROUTE, LOGIN_ROUTE } from "~/utils/consts";
-import { AddDeviceAdminPopup } from "~/view/components/addDeviceAdminPopup/AddDeviceAdminPopup.component";
-import { MenuIcon } from "~/view/components/menuIcon/MenuIcon.component";
-import { Pagination } from "~/view/components/pagination/Pagination.component";
+
+import {
+  getDevicesForUser,
+  addNewDevice,
+  getDevicesAll,
+} from "../../../http/api";
+import { setPopup } from "../../../redux/actions/popup";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
+import { UserDetails } from "../../../redux/types";
+import { EVENTS_ROUTE, LOGIN_ROUTE } from "../../../utils/consts";
+import { AddDeviceAdminPopup } from "../../../view/components/addDeviceAdminPopup/AddDeviceAdminPopup.component";
+import { MenuIcon } from "../../../view/components/menuIcon/MenuIcon.component";
+import { Pagination } from "../../../view/components/pagination/Pagination.component";
 
 import styles from "./devices.scss";
 

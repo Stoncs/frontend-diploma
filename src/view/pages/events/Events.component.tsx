@@ -2,17 +2,16 @@ import { AxiosError } from "axios";
 import React from "react";
 import { useIntl } from "react-intl";
 import { useNavigate, useParams } from "react-router-dom";
-import { getEventsDevice } from "~/http/api";
-import { LOGIN_ROUTE, STATISTICS_ROUTE } from "~/utils/consts";
-import { MenuIcon } from "~/view/components/menuIcon/MenuIcon.component";
-import { Pagination } from "~/view/components/pagination/Pagination.component";
 
-import styles from "./events.scss";
+import { getEventsDevice } from "../../../http/api";
 import photo_action from "../../../assets/action_photo.png";
 import export_png from "../../../assets/export.png";
+import { MenuIcon } from "../../../view/components/menuIcon/MenuIcon.component";
+import { Pagination } from "../../../view/components/pagination/Pagination.component";
+import { LOGIN_ROUTE, STATISTICS_ROUTE } from "../../../utils/consts";
 
-// Поиск не сделан
-// При добавлении устройства с несуществующим ключом сделать попап ошибку
+import styles from "./events.scss";
+
 interface IEvent {
   id: number;
   carId: string;
@@ -66,7 +65,6 @@ export const Events = () => {
 
   const fetchEvents = async () => {
     try {
-      // Сменить на idDevice
       const typeOfFiltration =
         eventTypeFilter === "" && carTypeFilter === ""
           ? "3"
@@ -85,7 +83,7 @@ export const Events = () => {
       setEvents(
         data.sort(
           (a: any, b: any) =>
-            Number(new Date(b.time)) - Number(new Date(a.time))
+            Number(new Date(a.time)) - Number(new Date(b.time))
         )
       );
     } catch (error) {
@@ -98,7 +96,6 @@ export const Events = () => {
   };
   // get devices
   React.useEffect(() => {
-    console.log("events get");
     fetchEvents();
   }, [carTypeFilter, eventTypeFilter]);
 
@@ -122,6 +119,7 @@ export const Events = () => {
                 src={export_png}
                 className={styles.export_png}
                 onClick={() => exportScv()}
+                data-testid="export-csv-button"
               />
             </div>
 
@@ -143,6 +141,7 @@ export const Events = () => {
                   className={styles.select}
                   value={eventTypeFilter}
                   onChange={(e) => setEventTypeFilter(e.target.value)}
+                  data-testid="car-type-filter"
                 >
                   <option value="">Все типы событий</option>
                   <option value="0">Проезд</option>
@@ -155,6 +154,7 @@ export const Events = () => {
                   className={styles.select}
                   value={carTypeFilter}
                   onChange={(e) => setCarTypeFilter(e.target.value)}
+                  data-testid="event-type-filter"
                 >
                   <option value="">Все типы машин</option>
                   <option value="0">Легковая</option>

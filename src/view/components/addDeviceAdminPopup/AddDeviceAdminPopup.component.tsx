@@ -1,9 +1,11 @@
 import { AxiosError, isAxiosError } from "axios";
 import React, { Dispatch, SetStateAction } from "react";
 import { useIntl } from "react-intl";
-import { registerDevice } from "~/http/api";
-import { setPopup } from "~/redux/actions/popup";
-import { useAppDispatch } from "~/redux/hooks";
+
+import { registerDevice } from "../../../http/api";
+import { setPopup } from "../../../redux/actions/popup";
+import { useAppDispatch } from "../../../redux/hooks";
+
 import styles from "./addDeviceAdminPopup.scss";
 
 interface AddDeviceAdminPopupProps {

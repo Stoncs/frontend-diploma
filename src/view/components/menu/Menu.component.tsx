@@ -1,10 +1,11 @@
 import React from "react";
+import { useNavigate } from "react-router";
+
+import { useAppDispatch } from "../../../redux/hooks";
+import { unsetMenu } from "../../../redux/actions/menu";
+import { DEVICES_ROUTE, PROFILE_ROUTE } from "../../../utils/consts";
 
 import styles from "./menu.scss";
-import { useAppDispatch } from "~/redux/hooks";
-import { unsetMenu } from "~/redux/actions/menu";
-import { useNavigate } from "react-router";
-import { DEVICES_ROUTE, PROFILE_ROUTE } from "~/utils/consts";
 
 export const Menu = () => {
   const dispatch = useAppDispatch();

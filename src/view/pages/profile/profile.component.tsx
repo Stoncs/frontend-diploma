@@ -1,13 +1,15 @@
 import React from "react";
-import { changeProfile, getUserProfile, sendEmail } from "~/http/api";
-import { setUser } from "~/redux/actions/user";
-import { useAppDispatch } from "~/redux/hooks";
-import styles from "./profile.scss";
-import { MenuIcon } from "~/view/components/menuIcon/MenuIcon.component";
-import profile_icon from "./../../../assets/profile_icon.png";
 import { useNavigate } from "react-router";
-import { LOGIN_ROUTE } from "~/utils/consts";
-import { setPopup } from "~/redux/actions/popup";
+
+import { useAppDispatch } from "../../../redux/hooks";
+import { MenuIcon } from "../../../view/components/menuIcon/MenuIcon.component";
+import { LOGIN_ROUTE } from "../../../utils/consts";
+import { setPopup } from "../../../redux/actions/popup";
+
+import profile_icon from "./../../../assets/profile_icon.png";
+import styles from "./profile.scss";
+
+import { changeProfile, getUserProfile, sendEmail } from "~/http/api";
 
 type ProfileFieldProps = {
   name: string;
@@ -32,17 +34,21 @@ const ProfileField = ({
           <input
             placeholder={placeholder}
             pattern={pattern}
-            value={value!}
+            value={value}
             onChange={(e) => {
-              if (e.target) setValue(e.target.value);
+              if (e.target) {
+                setValue(e.target.value);
+              }
             }}
           />
         ) : (
           <input
             placeholder={placeholder}
-            value={value!}
+            value={value}
             onChange={(e) => {
-              if (e.target) setValue(e.target.value);
+              if (e.target) {
+                setValue(e.target.value);
+              }
             }}
           />
         )}

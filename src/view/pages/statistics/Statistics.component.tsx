@@ -1,22 +1,7 @@
 import { AxiosError } from "axios";
 import React from "react";
-import { Bar, Line } from "react-chartjs-2";
+import { Bar, Line, Chart } from "react-chartjs-2";
 import { useNavigate, useParams } from "react-router";
-import {
-  getAverageSpeedByTypeCar,
-  getAverageSpeedPerDay,
-  getAverageSpeedPerHour,
-  getEventsDevice,
-  getTypeOfCarPerDay,
-  getTypeOfCarPerHour,
-  getTypeOfEventPerDay,
-  getTypeOfEventPerHour,
-} from "~/http/api";
-import { EVENTS_ROUTE, LOGIN_ROUTE } from "~/utils/consts";
-import { MenuIcon } from "~/view/components/menuIcon/MenuIcon.component";
-
-import styles from "./statistics.scss";
-
 import {
   Chart as ChartJS,
   BarElement,
@@ -28,8 +13,22 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import { Chart } from "react-chartjs-2";
 import moment from "moment";
+
+import {
+  getAverageSpeedByTypeCar,
+  getAverageSpeedPerDay,
+  getAverageSpeedPerHour,
+  getEventsDevice,
+  getTypeOfCarPerDay,
+  getTypeOfCarPerHour,
+  getTypeOfEventPerDay,
+  getTypeOfEventPerHour,
+} from "../../../http/api";
+import { EVENTS_ROUTE, LOGIN_ROUTE } from "../../../utils/consts";
+import { MenuIcon } from "../../../view/components/menuIcon/MenuIcon.component";
+
+import styles from "./statistics.scss";
 
 ChartJS.register(
   BarElement,
@@ -45,13 +44,13 @@ ChartJS.register(
 export const Statistics = () => {
   // Данные для графиков
   const [averageSpeedData, setAverageSpeedData] = React.useState<number[]>([]);
-  const [typeCarData, setTypeCarData] = React.useState<Array<number[]>>([]);
-  const [typeEventData, setTypeEventData] = React.useState<Array<number[]>>([]);
+  const [typeCarData, setTypeCarData] = React.useState<number[][]>([]);
+  const [typeEventData, setTypeEventData] = React.useState<number[][]>([]);
 
   // Подсчёт всего автомобилей
   const [countCar, setCountCar] = React.useState(0);
   // Подсчёт по типам автомобилей
-  const [countTypeCar, setCountTypeCar] = React.useState<Array<number>>([
+  const [countTypeCar, setCountTypeCar] = React.useState<number[]>([
     0, 0, 0, 0,
   ]);
   const [avSpeedByTypeCar, setAvSpeedByTypeCar] = React.useState([0, 0, 0, 0]);
@@ -344,7 +343,9 @@ export const Statistics = () => {
             dataForTypeCar[j][i] = obj[i];
             countType[i] += obj[i];
             count += obj[i];
-          } else dataForTypeCar[j][i] = 0;
+          } else {
+            dataForTypeCar[j][i] = 0;
+          }
         }
         j++;
       }
