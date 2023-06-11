@@ -254,12 +254,14 @@ export const Statistics = () => {
           day,
           Number(keyDevice!)
         );
+
         typesCar = await getTypeOfCarPerHour(
           year,
           month,
           day,
           Number(keyDevice!)
         );
+
         typesEvent = await getTypeOfEventPerHour(
           year,
           month,
@@ -386,7 +388,9 @@ export const Statistics = () => {
           <h1>Статистика {keyDevice}</h1>
           <div className={styles.statistics_window__control}>
             <div className={styles.block_control}>
+              <label htmlFor="selectDatePeriod">selectDatePeriod</label>
               <select
+                id="selectDatePeriod"
                 value={stateSelect}
                 onChange={(e) => {
                   setStateSelect(e.target.value);
@@ -398,19 +402,27 @@ export const Statistics = () => {
                 ))}
               </select>
               {stateSelect === valuesSelect[0] ? (
-                <input
-                  type="date"
-                  value={date}
-                  onChange={(e) => onChangeDate(e, "date")}
-                />
+                <>
+                  <label htmlFor="date">Дата</label>
+                  <input
+                    id="date"
+                    type="date"
+                    value={date}
+                    onChange={(e) => onChangeDate(e, "date")}
+                  />
+                </>
               ) : (
                 <>
+                  <label htmlFor="date1">Дата 1</label>
                   <input
+                    id="date1"
                     type="date"
                     value={date1}
                     onChange={(e) => onChangeDate(e, "date1")}
                   />
+                  <label htmlFor="date2">Дата 2</label>
                   <input
+                    id="date2"
                     type="date"
                     value={date2}
                     onChange={(e) => onChangeDate(e, "date2")}

@@ -55,6 +55,9 @@
     height: 80%;
   }
 
+  label {
+    display: none;
+  }
   &__control {
     display: flex;
     justify-content: center;
