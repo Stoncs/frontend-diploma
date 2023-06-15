@@ -12,24 +12,21 @@ import {
 import { MemoryRouter, useNavigate, useParams } from "react-router-dom";
 import { IntlProvider } from "react-intl";
 import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
 import userEvent from "@testing-library/user-event";
 import { Devices } from "../view/pages/devices/devices.component";
 import { getDevicesForUser, addNewDevice, getDevicesAll } from "../http/api";
-
+import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 import { LOCALES } from "../i18n/locales";
 import { messages } from "../i18n/messages";
 import Locales from "../view/components/locales/locales.component";
 import MessagePopup from "../view/components/messagePopup/MessagePopup.component";
-
+import rootReducer from "../redux/reducers";
 jest.mock("../http/api"); // Мокируем модуль http/api
 
 jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"),
   useNavigate: jest.fn(),
 }));
-
-const mockStore = configureStore([]);
 
 // Custom mock of useState hook
 const useStateMock = (initialState) => {
@@ -89,14 +86,10 @@ describe("Devices", () => {
   });
 
   it("renders devices page", async () => {
-    const initialState = {
-      popup: {
-        header: "Успешно!",
-        message: "Устройство добавлено",
-        type: "normal",
-      },
-    };
-    const store = mockStore(initialState);
+    const store = configureStore({
+      reducer: rootReducer,
+      middleware: (getDefaultMiddleware) => [...getDefaultMiddleware()],
+    });
     const popupInfo = store.getState();
     render(
       <Provider store={store}>
@@ -110,7 +103,7 @@ describe("Devices", () => {
           />
           <MemoryRouter>
             <Devices />
-            {popupInfo.popup.header ? (
+            {popupInfo.popup?.header ? (
               <MessagePopup {...popupInfo.popup} />
             ) : (
               ""
@@ -130,14 +123,10 @@ describe("Devices", () => {
   });
 
   test("adds a new device", async () => {
-    const initialState = {
-      popup: {
-        header: "Успешно!",
-        message: "Устройство добавлено",
-        type: "normal",
-      },
-    };
-    const store = mockStore(initialState);
+    const store = configureStore({
+      reducer: rootReducer,
+      middleware: (getDefaultMiddleware) => [...getDefaultMiddleware()],
+    });
     const popupInfo = store.getState();
     render(
       <Provider store={store}>
@@ -151,7 +140,7 @@ describe("Devices", () => {
           />
           <MemoryRouter>
             <Devices />
-            {popupInfo.popup.header ? (
+            {popupInfo.popup?.header ? (
               <MessagePopup {...popupInfo.popup} />
             ) : (
               ""
@@ -172,22 +161,16 @@ describe("Devices", () => {
       expect(addNewDevice).toHaveBeenCalledWith("1", "newKey");
     });
 
-    // Проверяем, что попап с сообщением об успешном добавлении отображается
-    await waitFor(() =>
-      expect(screen.getByText("Успешно!")).toBeInTheDocument()
-    );
+    // Проверяем, что попап успешно выводится
+    const updatedState = store.getState();
+    expect(updatedState.popup?.header).toBe("Успешно!");
   });
 
   test("displays error message when adding a device with an invalid key", async () => {
-    await (() => cleanup());
-    const initialState = {
-      popup: {
-        header: "Ошибка!",
-        message: "Неверный ключ",
-        type: "error",
-      },
-    };
-    const store = mockStore(initialState);
+    const store = configureStore({
+      reducer: rootReducer,
+      middleware: (getDefaultMiddleware) => [...getDefaultMiddleware()],
+    });
     const popupInfo = store.getState();
     render(
       <Provider store={store}>
@@ -201,7 +184,7 @@ describe("Devices", () => {
           />
           <MemoryRouter>
             <Devices />
-            {popupInfo.popup.header ? (
+            {popupInfo.popup?.header ? (
               <MessagePopup {...popupInfo.popup} />
             ) : (
               ""
@@ -229,7 +212,8 @@ describe("Devices", () => {
       expect(addNewDevice).toHaveBeenCalledWith("1", "invalidKey");
     });
 
-    // Проверяем, что попап с ошибкой отображается
-    expect(screen.getByText("Ошибка!")).toBeInTheDocument();
+    // Проверяем, что попап ошибка появится
+    const updatedState = store.getState();
+    expect(updatedState.popup?.header).toBe("Ошибка!");
   });
 });

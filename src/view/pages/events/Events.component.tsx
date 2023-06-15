@@ -2,6 +2,8 @@ import { AxiosError } from "axios";
 import React from "react";
 import { useIntl } from "react-intl";
 import { useNavigate, useParams } from "react-router-dom";
+import moment from "moment";
+import { DatetimePickerTrigger } from "rc-datetime-picker";
 
 import { getEventsDevice } from "../../../http/api";
 import photo_action from "../../../assets/action_photo.png";
@@ -38,6 +40,8 @@ export const Events = () => {
   // Количество камер на одной странице
   const [eventsPerPage, setEventsPerPage] = React.useState(10);
 
+  // Состояние для календаря
+  const [datePicker, setDatePicker] = React.useState(moment());
   const navigate = useNavigate();
   const intl = useIntl();
 
@@ -79,7 +83,6 @@ export const Events = () => {
         carTypeFilter,
         eventTypeFilter
       );
-      console.log(data);
       setEvents(
         data.sort(
           (a: any, b: any) =>
@@ -110,6 +113,15 @@ export const Events = () => {
 
   return (
     <>
+      <div className={styles.date_picker}>
+        <DatetimePickerTrigger moment={datePicker} onChange={setDatePicker}>
+          <input
+            type="text"
+            value={datePicker.format("YYYY-MM-DD HH:mm")}
+            readOnly
+          />
+        </DatetimePickerTrigger>
+      </div>
       <div className={styles.container}>
         <div className={styles.devices_window}>
           <div className={styles.devices_window__top}>
@@ -162,6 +174,7 @@ export const Events = () => {
                   <option value="2">Спец.транспорт</option>
                   <option value="3">Автобус</option>
                 </select>
+
                 <button
                   className={styles.button_in_block}
                   onClick={() =>

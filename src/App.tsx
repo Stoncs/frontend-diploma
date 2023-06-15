@@ -5,8 +5,7 @@ import { IntlProvider } from "react-intl";
 
 import { LOCALES } from "./i18n/locales";
 import { messages } from "./i18n/messages";
-import store, { Persistor } from "./redux/store";
-import { PersistGate } from "redux-persist/integration/react";
+import store from "./redux/store";
 import { Router } from "./router";
 
 import "./scss/normalise.scss";
@@ -25,22 +24,20 @@ export const App = () => {
 
   return (
     <Provider store={store}>
-      <PersistGate loading={null} persistor={Persistor}>
-        <IntlProvider
-          messages={messages[currentLocale]}
-          locale={currentLocale}
-          defaultLocale={LOCALES.RUSSIAN}
-        >
-          <Locales
-            setCurrentLocale={setCurrentLocale}
-            currentLocale={currentLocale}
-          />
+      <IntlProvider
+        messages={messages[currentLocale]}
+        locale={currentLocale}
+        defaultLocale={LOCALES.RUSSIAN}
+      >
+        <Locales
+          setCurrentLocale={setCurrentLocale}
+          currentLocale={currentLocale}
+        />
 
-          <BrowserRouter>
-            <Router />
-          </BrowserRouter>
-        </IntlProvider>
-      </PersistGate>
+        <BrowserRouter>
+          <Router />
+        </BrowserRouter>
+      </IntlProvider>
     </Provider>
   );
 };

@@ -1,5 +1,4 @@
 import { AxiosError } from "axios";
-import jwt_decode from "jwt-decode";
 
 import { $authHost, $host } from ".";
 

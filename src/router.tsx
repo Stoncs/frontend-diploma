@@ -5,9 +5,9 @@ import { MenuDetails, PopupDetails } from "./redux/types";
 import {
   CHANGE_PASSWORD_ROUTE,
   DEVICES_ROUTE,
-  DEVICE_SETTINGS_ROUTE,
   EVENTS_ROUTE,
   LOGIN_ROUTE,
+  PASSWORD_RECOVERY_ROUTE,
   PROFILE_ROUTE,
   REGISTRATION_ROUTE,
   STATISTICS_ROUTE,
@@ -33,7 +33,7 @@ export const Router = () => {
       <Routes>
         <Route path={LOGIN_ROUTE} element={<SignIn />} />
         <Route path={REGISTRATION_ROUTE} element={<SingUp />} />
-        <Route path="password-recovery" element={<PasswordRecovery />} />
+        <Route path={PASSWORD_RECOVERY_ROUTE} element={<PasswordRecovery />} />
         <Route path={CHANGE_PASSWORD_ROUTE} element={<PasswordChange />} />
         <Route path={PROFILE_ROUTE} element={<Profile />} />
         <Route path={DEVICES_ROUTE} element={<Devices />} />
