@@ -25,6 +25,7 @@ interface IEvent {
 
 export const Events = () => {
   const { id: keyDevice } = useParams();
+  const deviceName = localStorage.getItem("deviceName") || "";
   // Поле для поиска
   const [nameDevice, setNameDevice] = React.useState("");
 
@@ -126,7 +127,9 @@ export const Events = () => {
         <div className={styles.devices_window}>
           <div className={styles.devices_window__top}>
             <div className={styles.header}>
-              <h1>События устройства {keyDevice}</h1>
+              <h1>
+                {intl.formatMessage({ id: "eventsPageHeader" })} {deviceName}
+              </h1>
               <img
                 src={export_png}
                 className={styles.export_png}
@@ -141,7 +144,7 @@ export const Events = () => {
                   className={styles.input}
                   name="nameDevice"
                   value={nameDevice}
-                  placeholder="Номер"
+                  placeholder={intl.formatMessage({ id: "numberSearch" })}
                   onChange={(e) => setNameDevice(e.target.value)}
                 />
                 <button className={styles.button_in_block}>
@@ -155,10 +158,18 @@ export const Events = () => {
                   onChange={(e) => setEventTypeFilter(e.target.value)}
                   data-testid="car-type-filter"
                 >
-                  <option value="">Все типы событий</option>
-                  <option value="0">Проезд</option>
-                  <option value="1">Превышение скорости</option>
-                  <option value="2">Проезд перед пешеходом</option>
+                  <option value="">
+                    {intl.formatMessage({ id: "allTypesEvents" })}
+                  </option>
+                  <option value="0">
+                    {intl.formatMessage({ id: "passage" })}
+                  </option>
+                  <option value="1">
+                    {intl.formatMessage({ id: "overSpeed" })}
+                  </option>
+                  <option value="2">
+                    {intl.formatMessage({ id: "passageFrontPed" })}
+                  </option>
                 </select>
 
                 {/* Car Type Filter */}
@@ -168,11 +179,19 @@ export const Events = () => {
                   onChange={(e) => setCarTypeFilter(e.target.value)}
                   data-testid="event-type-filter"
                 >
-                  <option value="">Все типы машин</option>
-                  <option value="0">Легковая</option>
-                  <option value="1">Грузовая</option>
-                  <option value="2">Спец.транспорт</option>
-                  <option value="3">Автобус</option>
+                  <option value="">
+                    {intl.formatMessage({ id: "allTypesCar" })}
+                  </option>
+                  <option value="0">
+                    {intl.formatMessage({ id: "passengerCar" })}
+                  </option>
+                  <option value="1">
+                    {intl.formatMessage({ id: "truck" })}
+                  </option>
+                  <option value="2">
+                    {intl.formatMessage({ id: "specialTransport" })}
+                  </option>
+                  <option value="3">{intl.formatMessage({ id: "bus" })}</option>
                 </select>
 
                 <button
@@ -181,7 +200,7 @@ export const Events = () => {
                     navigate(STATISTICS_ROUTE.slice(0, -3) + keyDevice)
                   }
                 >
-                  Статистика
+                  {intl.formatMessage({ id: "staticsticsButton" })}
                 </button>
               </div>
             </div>
@@ -189,11 +208,11 @@ export const Events = () => {
               <thead>
                 <tr className={styles.table_header}>
                   <th></th> {/* Пустая ячейка для иконки */}
-                  <th>Номер машины</th>
-                  <th>Скорость (км/ч)</th>
-                  <th>Дата</th>
-                  <th>Тип машины</th>
-                  <th>Тип события</th>
+                  <th> {intl.formatMessage({ id: "numberOfTheCar" })}</th>
+                  <th> {intl.formatMessage({ id: "speedCarStatistics" })}</th>
+                  <th> {intl.formatMessage({ id: "dateStatistics" })}</th>
+                  <th> {intl.formatMessage({ id: "carTypeStatistics" })}</th>
+                  <th> {intl.formatMessage({ id: "eventTypeStatistics" })}</th>
                 </tr>
               </thead>
               <tbody>
@@ -208,19 +227,19 @@ export const Events = () => {
                     <td>{event.time}</td>
                     <td>
                       {event.typeOfCar === "0"
-                        ? "Легковая"
+                        ? intl.formatMessage({ id: "passengerCar" })
                         : event.typeOfCar === "1"
-                        ? "Грузовая"
+                        ? intl.formatMessage({ id: "truck" })
                         : event.typeOfCar === "2"
-                        ? "Спец.транспорт"
-                        : "Автобус"}
+                        ? intl.formatMessage({ id: "specialTransport" })
+                        : intl.formatMessage({ id: "bus" })}
                     </td>
                     <td>
                       {event.typeOfEvent === "0"
-                        ? "Проезд"
+                        ? intl.formatMessage({ id: "passage" })
                         : event.typeOfEvent === "1"
-                        ? "Превышение скорости"
-                        : "Проезд перед пешеходом"}
+                        ? intl.formatMessage({ id: "overSpeed" })
+                        : intl.formatMessage({ id: "passageFrontPed" })}
                     </td>
                   </tr>
                 ))}

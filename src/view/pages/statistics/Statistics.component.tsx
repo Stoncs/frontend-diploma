@@ -29,6 +29,7 @@ import { EVENTS_ROUTE, LOGIN_ROUTE } from "../../../utils/consts";
 import { MenuIcon } from "../../../view/components/menuIcon/MenuIcon.component";
 
 import styles from "./statistics.scss";
+import { useIntl } from "react-intl";
 
 ChartJS.register(
   BarElement,
@@ -42,10 +43,13 @@ ChartJS.register(
 );
 
 export const Statistics = () => {
+  const intl = useIntl();
   // Данные для графиков
   const [averageSpeedData, setAverageSpeedData] = React.useState<number[]>([]);
   const [typeCarData, setTypeCarData] = React.useState<number[][]>([]);
   const [typeEventData, setTypeEventData] = React.useState<number[][]>([]);
+
+  const deviceName = localStorage.getItem("deviceName") || "";
 
   // Подсчёт всего автомобилей
   const [countCar, setCountCar] = React.useState(0);
@@ -79,6 +83,7 @@ export const Statistics = () => {
   );
   const { id: keyDevice } = useParams();
   const navigate = useNavigate();
+
   const dataBarEventType = {
     labels:
       stateSelect === valuesSelect[0]
@@ -88,19 +93,19 @@ export const Statistics = () => {
           ),
     datasets: [
       {
-        label: "Проезд",
+        label: intl.formatMessage({ id: "passage" }),
         data: typeEventData.map((hour) => hour[0]),
         backgroundColor: "rgb(255, 99, 132)",
         stack: "Stack 0",
       },
       {
-        label: "Превышение скорости",
+        label: intl.formatMessage({ id: "overSpeed" }),
         data: typeEventData.map((hour) => hour[1]),
         backgroundColor: "rgb(75, 192, 192)",
         stack: "Stack 1",
       },
       {
-        label: "Проезд перед пешеходом",
+        label: intl.formatMessage({ id: "passageFrontPed" }),
         data: typeEventData.map((hour) => hour[2]),
         backgroundColor: "rgb(53, 162, 235)",
         stack: "Stack 2",
@@ -116,25 +121,25 @@ export const Statistics = () => {
           ),
     datasets: [
       {
-        label: "Легковая",
+        label: intl.formatMessage({ id: "passengerCar" }),
         data: typeCarData.map((hour) => hour[0]),
         backgroundColor: "rgb(255, 99, 132)",
         stack: "Stack 0",
       },
       {
-        label: "Грузовая",
+        label: intl.formatMessage({ id: "truck" }),
         data: typeCarData.map((hour) => hour[1]),
         backgroundColor: "rgb(75, 192, 192)",
         stack: "Stack 1",
       },
       {
-        label: "Спец.транспорт",
+        label: intl.formatMessage({ id: "specialTransport" }),
         data: typeCarData.map((hour) => hour[2]),
         backgroundColor: "rgb(53, 162, 235)",
         stack: "Stack 2",
       },
       {
-        label: "Автобус",
+        label: intl.formatMessage({ id: "bus" }),
         data: typeCarData.map((hour) => hour[3]),
         backgroundColor: "rgb(64, 227, 68)",
         stack: "Stack 3",
@@ -150,7 +155,7 @@ export const Statistics = () => {
           ),
     datasets: [
       {
-        label: "Средняя скорость",
+        label: intl.formatMessage({ id: "canvasEvSpeed" }),
         data: averageSpeedData.map((hour) => hour),
         backgroundColor: "rgb(64, 227, 68)",
       },
@@ -160,7 +165,7 @@ export const Statistics = () => {
     plugins: {
       title: {
         display: true,
-        text: "Типы событий",
+        text: intl.formatMessage({ id: "canvasTypeEvents" }),
       },
     },
     responsive: true,
@@ -181,7 +186,7 @@ export const Statistics = () => {
     plugins: {
       title: {
         display: true,
-        text: "Типы автомобилей",
+        text: intl.formatMessage({ id: "canvasTypeCars" }),
       },
     },
     responsive: true,
@@ -202,7 +207,7 @@ export const Statistics = () => {
     plugins: {
       title: {
         display: true,
-        text: "Средняя скорость",
+        text: intl.formatMessage({ id: "canvasEvSpeed" }),
       },
     },
     responsive: true,
@@ -385,7 +390,9 @@ export const Statistics = () => {
     <div className={styles.container}>
       <div className={styles.statistics_window}>
         <div className={styles.statistics_window__top}>
-          <h1>Статистика {keyDevice}</h1>
+          <h1>
+            {intl.formatMessage({ id: "statisticsPageHeader" })} {deviceName}
+          </h1>
           <div className={styles.statistics_window__control}>
             <div className={styles.block_control}>
               <label htmlFor="selectDatePeriod">selectDatePeriod</label>
@@ -434,38 +441,55 @@ export const Statistics = () => {
                 className={styles.button_in_block}
                 onClick={() => navigate(EVENTS_ROUTE.slice(0, -3) + keyDevice)}
               >
-                События
+                {intl.formatMessage({ id: "statisticsEvents" })}
               </button>
             </div>
           </div>
         </div>
         <div className={styles.content}>
           <div className={styles.content__charts}>
-            <label data-testid="barEventTypeChart">Типы события</label>
+            <label data-testid="barEventTypeChart">Типы событий</label>
             <Bar data={dataBarEventType} options={options1} />
-            <label data-testid="barCarTypeChart">Типы событий</label>
+            <label data-testid="barCarTypeChart">Типы машин</label>
             <Bar data={dataBarCarType} options={options2} />
             <label data-testid="lineAverageSpeedChart">Скорость</label>
             <Line data={dataLineAverageSpeed} options={options3} />
           </div>
           <div className={styles.content__text}>
-            <p>Всего транспорта: {countCar}</p>
-            <p>Количество легковых: {countTypeCar[0]}</p>
             <p>
-              Средняя скорость легковых: {avSpeedByTypeCar[0].toFixed(2)} км/ч
+              {intl.formatMessage({ id: "countCar" })} {countCar}
             </p>
-            <p>Количество грузовых: {countTypeCar[1]}</p>
             <p>
-              Средняя скорость грузовых: {avSpeedByTypeCar[1].toFixed(2)} км/ч
+              {intl.formatMessage({ id: "countTypeCar0" })} {countTypeCar[0]}
             </p>
-            <p>Количество спец. транспорта: {countTypeCar[2]}</p>
             <p>
-              Средняя скорость спец. транспорта:{" "}
-              {avSpeedByTypeCar[2].toFixed(2)} км/ч
+              {intl.formatMessage({ id: "avSpeedByTypeCar0" })}{" "}
+              {avSpeedByTypeCar[0].toFixed(2)}{" "}
+              {intl.formatMessage({ id: "kmh" })}
             </p>
-            <p>Количество автобусов: {countTypeCar[3]}</p>
             <p>
-              Средняя скорость автобусов: {avSpeedByTypeCar[3].toFixed(2)} км/ч
+              {intl.formatMessage({ id: "countTypeCar1" })} {countTypeCar[1]}
+            </p>
+            <p>
+              {intl.formatMessage({ id: "avSpeedByTypeCar1" })}{" "}
+              {avSpeedByTypeCar[1].toFixed(2)}{" "}
+              {intl.formatMessage({ id: "kmh" })}
+            </p>
+            <p>
+              {intl.formatMessage({ id: "countTypeCar2" })} {countTypeCar[2]}
+            </p>
+            <p>
+              {intl.formatMessage({ id: "avSpeedByTypeCar2" })}{" "}
+              {avSpeedByTypeCar[2].toFixed(2)}{" "}
+              {intl.formatMessage({ id: "kmh" })}
+            </p>
+            <p>
+              {intl.formatMessage({ id: "countTypeCar3" })} {countTypeCar[3]}
+            </p>
+            <p>
+              {intl.formatMessage({ id: "avSpeedByTypeCar3" })}{" "}
+              {avSpeedByTypeCar[3].toFixed(2)}{" "}
+              {intl.formatMessage({ id: "kmh" })}
             </p>
           </div>
         </div>

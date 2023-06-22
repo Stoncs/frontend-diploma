@@ -135,7 +135,7 @@ export const Devices = () => {
                     className={styles.button}
                     onClick={() => setAddDeviceAdmin(true)}
                   >
-                    Добавить новое устройство
+                    {intl.formatMessage({ id: "addNewDevice" })}
                   </button>
                 </div>
               ) : (
@@ -188,7 +188,12 @@ export const Devices = () => {
                 {currentDevices.map((device) => (
                   <tr key={device.id}>
                     <td className={styles.first}>
-                      <Link to={EVENTS_ROUTE.slice(0, -3) + device.id}>
+                      <Link
+                        to={EVENTS_ROUTE.slice(0, -3) + device.id}
+                        onClick={() =>
+                          localStorage.setItem("deviceName", device.name)
+                        }
+                      >
                         {device.name}
                       </Link>
                     </td>
